@@ -89,3 +89,66 @@
 
 * Capture updated data from online forums and news sites.
 Updates are streamed to user devices through feed readers.
+
+
+## Languages of Data professionals
+
+
+### Query Languages
+
+- Query languages are designed for accessing and manipulating data in a database, such as SQL.
+
+### Programming Languages
+
+- Programming languages are designed for developing applications and controlling application behavior. Examples include Python, R, and Java.
+
+### Shell and Scripting Languages
+
+- Shell and scripting languages, such as Unix/Linux Shell and PowerShell, are ideal for repetitive and time-consuming operational tasks.
+
+
+### SQL
+
+SQL (Structured Query Language) is a querying language designed for accessing and manipulating information from relational databases. Using SQL, we can:
+
+- Insert, update, and delete records
+- Create new databases, tables, and views
+- Write stored procedures
+
+Advantages of using SQL include:
+
+- Portability across platforms
+- Simple syntax similar to English
+- Efficiency in retrieving large amounts of data
+- Quick prototyping due to its interpreter system
+
+### Python
+
+- Python is a widely-used open-source, general-purpose, high-level programming language. Advantages of Python include:
+- Expressiveness and readability
+- Large developer community
+- Ease of learning
+- Performance in handling vast amounts of data
+- Support for multiple programming paradigms
+
+### R
+
+- R is an open-source programming language and environment for data analysis, visualization, machine learning, and statistics. Key benefits of R include:
+- Platform independence
+- Extensibility
+- Comprehensive data capabilities
+- Compelling visualizations with libraries like Ggplot2 and Plotly
+
+### Java
+
+- Java is an object-oriented, platform-independent programming language used in data analytics processes such as cleaning, importing/exporting data, and statistical analysis.
+- Java is also prominent in big data frameworks like Hadoop, Hive, and Spark.
+
+### Unix/Linux Shell
+
+- A Unix/Linux Shell is a series of commands written in a plain text file to accomplish specific tasks, useful for repetitive and time-consuming operations such as file manipulation, system administration, and backups.
+
+### PowerShell
+
+- PowerShell is a cross-platform automation tool and configuration framework by Microsoft. It's optimized for working with structured data formats, and it's object-based, making it suitable for tasks like data mining, GUI building, and report creation.
+
