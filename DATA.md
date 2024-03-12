@@ -392,6 +392,7 @@ Another category of data repositories are Big Data Stores, that include distribu
   - Characteristics and applications of data warehouses, data marts, and data lakes discussed.
 
 - **Data Warehouse**:
+   ![](SQL/data_warehouse.png)
   - Central repository of integrated data from multiple sources.
   - Single source of truth storing cleansed, conformed, and categorized current and historical data.
   - Three-tier architecture: Database servers, OLAP Server, Client front-end layer.
@@ -417,3 +418,5 @@ Another category of data repositories are Big Data Stores, that include distribu
 - **Evaluation**:
   - Need to be evaluated within the context of use case and technology infrastructure.
   
+### Considerations for Choice of Data Repository
+
