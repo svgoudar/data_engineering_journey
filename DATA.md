@@ -420,3 +420,82 @@ Another category of data repositories are Big Data Stores, that include distribu
   
 ### Considerations for Choice of Data Repository
 
+- Factors to consider when choosing a data repository:
+  - Use case:
+    - Structured, semi-structured, or unstructured data
+    - Knowledge of data schema
+  - Performance requirements:
+    - Data at rest, streaming data, or data in motion
+    - Encryption needs
+  - Volume and storage requirements:
+    - Big data system necessity
+    - Storage and update frequency
+  - Organizational standards:
+    - Database preferences set by the organization
+  - Capacity and access needs:
+    - Short intervals or long-running queries
+    - Transaction processing, analytics, archival, or warehousing purposes
+  - Compatibility:
+    - Integration with existing programming languages, tools, and processes
+  - Security features:
+    - Ensuring data security
+  - Scalability:
+    - Ability to scale along with the organization's growth
+
+- Preferred solutions and considerations:
+  - Enterprise relational database (e.g., Db2)
+  - Open-source relational database for smaller projects and microservices
+  - Preferred unstructured data source
+  - Consideration of organizational skills and cost implications
+
+- Hosting platform considerations:
+  - Choice of hosting platform (e.g., AWS RDS, Amazon Aurora, Google's relational offerings)
+  - Impact on decision-making regarding database selection
+
+- Questions to consider:
+  - Data storage decisions
+  - Data retrieval methods
+  - Hosting platform decisions
+
+- Factors determining the choice of data source:
+  - Structure, application nature, and data ingestion volume
+  - Relational databases (e.g., IBM Db2, Oracle, Postgres) for most cases
+  - Edge cases may require alternative solutions:
+    - Document stores (e.g., MongoDB) for large data ingestion
+    - Wide column stores (e.g., Cassandra) for certain use cases
+    - Graph data structures (e.g., Neo4J, Apache TinkerPop) for network analysis
+    - Hadoop with MapReduce for big data analytics
+
+
+
+- In this video, we will learn about some of the different tools and processes that work to move data from source to destination systems, such as:
+  - ETL, or the Extract, Transform, and Load Process
+  - ELT, or the Extract, Load, and Transform Process
+  - Data Pipelines
+
+- **Extract, Transform, and Load (ETL) Process**:
+  ![](snaps/etl.png)
+  - Purpose: Converts raw data into analysis-ready data.
+  - Extract:
+    - Batch processing: Moves data in large chunks at scheduled intervals (e.g., Stitch, Blendo).
+    - Stream processing: Pulls real-time data and transforms it in transit (e.g., Apache Samza, Apache Kafka).
+  - Transform: Executes rules and functions to convert raw data (e.g., standardizing date formats, removing duplicates).
+  - Load: Transports processed data to a destination system or repository (e.g., initial loading, incremental loading, full refresh).
+  - Tools: IBM Infosphere Information Server, AWS Glue, Improvado, Skyvia, HEVO, Informatica PowerCenter.
+
+- **Extract, Load, and Transform (ELT) Process**:
+  ![](snaps/elt.png)
+  - Extracted data is first loaded into the target system, and transformations are applied in the target system.
+  - Ideal for processing large sets of unstructured and non-relational data.
+  - Destination: Data lake or data warehouse.
+  - Advantages: Shorter cycle between extraction and delivery, flexibility for analysts, leverages raw data for multiple use cases.
+
+- **Data Pipelines**:
+  - Encompasses the entire journey of moving data from one system to another.
+  - Can be architected for batch processing, streaming data, or a combination of both.
+  - Supports long-running batch queries and smaller interactive queries.
+  - Destination: Typically a data lake, but may include other target destinations.
+  - Solutions: Apache Beam, AirFlow, DataFlow.
+
+- In this video, we learned about some of the different data movement approaches—the ETL (or Extract, Transfer, and Load process) and ELT (or the Extract, Load, and Transform process). We also learned about Data Pipelines, encompassing the complete journey of data from one system to another.
+
