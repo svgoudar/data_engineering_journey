@@ -825,3 +825,56 @@ Another category of data repositories are Big Data Stores, that include distribu
   - Cleaning and transformation capabilities.
   - Infrastructure needs.
   - Ease of use and learnability.
+
+
+
+- **Performance Tuning for Data Pipelines**:
+  - **Performance Areas**:
+    - Scalability
+    - Application failures
+    - Scheduled job issues
+    - Tool incompatibilities
+
+  - **Performance Metrics**:
+    - Latency : Time it takes for a service to fulfill a request
+    - Failures : Rate at which service fails
+    - Resource utilization : 
+    - Traffic : No of user request received in a given period
+
+  - **Troubleshooting Steps**:
+    1. Collect information about the incident.
+    2. Verify software and source code versions.
+    3. Check recent deployments for changes.
+    4. Analyze logs and metrics.
+    5. Reproduce the issue in a test environment.
+
+- **Database Optimization**:
+  - **Performance Metrics**:
+    - System outages
+    - Capacity utilization 
+    - Application slowdown
+    - Query performance
+    - Conflicting activities
+
+  - **Best Practices**:
+    - Capacity planning : Determining the optimal hardware and s/w resources required for performance
+    - Database indexing : Quickly locate data without searching each row in a database
+    - Database partitioning : It's a process whereby very large tables are divided into smaller, individual tables
+    - Database normalization : design technique to reduce inconsistencies arising out of data redundancy and anomalies arising out of update, delete, and insert operations on databases 
+
+- **Monitoring and Alerting Systems**:
+  - **Database Monitoring Tools**:
+    - Provide snapshots of database performance.
+
+  - **Application Performance Management Tools**:
+    - Measure application performance and resource utilization.
+
+  - **Query Performance Monitoring Tools**:
+    - Gather statistics about query throughput and execution performance.
+
+  - **Job-level Runtime Monitoring**:
+    - Monitor logical steps in long-running processes.
+
+  - **Maintenance Routines**:
+    - Time-based or condition-based routines to identify faults and low availability.
+
