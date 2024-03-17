@@ -583,3 +583,245 @@ Another category of data repositories are Big Data Stores, that include distribu
     - General-purpose engine for various applications including Interactive Analytics, Streams Processing, Machine Learning, etc.
     - Utilizes in-memory processing to increase computation speed, with support for multiple programming languages and data sources.
 
+
+
+## Layers of a Data Platform Architecture
+  ![](snaps/layers_of_data_platform.png)
+  - **Data Ingestion or Data Collection Layer**:
+    - Connects to source systems and brings data into the platform.
+    - Tasks include connecting to data sources, transferring data, and maintaining metadata.
+    - Tools: Google Cloud DataFlow, IBM Streams, Amazon Kinesis, Apache Kafka.
+
+  - **Data Storage and Integration Layer**:
+    - Stores and integrates ingested data.
+    - Tasks include storing data, transforming, and making it available for processing.
+    - Tools: IBM DB2, Microsoft SQL Server, MySQL, MongoDB, Apache HBase, IBM Cloudant, Talend.
+
+  - **Data Processing Layer**:
+    - Processes ingested and integrated data.
+    - Tasks include data validations, transformations, and applying business logic.
+    - Tools: Apache Spark, Python, R, spreadsheets, Watson Studio Refinery, Google DataPrep.
+
+  - **Analysis and User Interface Layer**:
+    - Delivers processed data to data consumers.
+    - Data consumers include BI analysts, data scientists, and other applications.
+    - Tools: Tableau, Jupyter Notebooks, IBM Cognos Analytics, Microsoft Power BI.
+
+  - **Data Pipeline Layer**:
+    - Implements and maintains continuously flowing data pipelines.
+    - Responsible for Extract, Transform, and Load (ETL) operations.
+    - Tools: Apache Airflow, DataFlow.
+
+- **Integration Platforms and Tools**:
+  - Offer various integration solutions including iPaaS.
+  - Tools: Adeptia Integration Suite, Google Cloud's Cooperation 534, IBM's Application Integration Suite on Cloud, Informatica's Integration Cloud.
+
+## Factors for Selecting and Designing Data Stores
+
+
+- **Design Considerations for Data Store**:
+  - **Type of   Data**:
+    - Can be relational or non-relational, structured or unstructured.
+    - Requires selecting appropriate database types.
+
+  - **Volume of Data**:
+    - Consider scale of data and need for raw storage or structured processing.
+    - Options include data lakes or big data repositories.
+
+  - **Intended Use of Data**:
+    - Consider transactional vs. analytical needs.
+    - Determine response time, backup, and recovery requirements.
+
+  - **Scalability**:
+    - Capability to handle growth in data, workloads, and users.
+    - Normalization vs. denormalization considerations.
+
+  - **Performance, Availability, Integrity, and Recoverability**:
+    - Performance: Throughput and latency.
+    - Availability: Ensure data access without downtime.
+    - Integrity: Protect data from corruption, loss, and attack.
+    - Recoverability: Ability to recover data after failures or disasters.
+
+  - **Data Privacy, Security, and Governance**:
+    - Follow layered security approach with access control and encryption.
+    - Comply with regulations like GDPR, CCPA, HIPAA.
+    - Implement data privacy and governance strategies from the start.
+
+- **Key Database Types**:
+  - **Relational Databases**:
+    - Suitable for structured data with defined schema.
+    - Examples: IBM DB2, Microsoft SQL Server, MySQL.
+  - **Non-Relational Databases (NoSQL)**:
+    - Suitable for semi-structured and unstructured data.
+    - Types include key-value, document, column, and graph-based.
+    - Examples: MongoDB, Cassandra, Neo4J.
+
+
+## Security 
+
+
+- **Security in Enterprise Data Platforms**:
+  - Security is addressed at multiple levels in enterprise data platforms.
+  - Facets of security include:
+    - Physical infrastructure security
+    - Network security
+    - Application security
+    - Data security
+
+- **Key Components of Information Security**:
+  - **CIA Triad**:
+    - **Confidentiality**: Control unauthorized access.
+    - **Integrity**: Validate resources are trustworthy.
+    - **Availability**: Ensure authorized access when needed.
+
+- **Levels of Security**:
+  1. **Physical Infrastructure Security**:
+     - Measures include authentication, surveillance, power redundancy, environmental protections.
+  2. **Network Security**:
+     - Utilizes firewalls, network access control, segmentation, security protocols, intrusion detection.
+  3. **Application Security**:
+     - Built-in security through threat modeling, secure design, coding practices, and security testing.
+  4. **Data Security**:
+     - Involves encryption for data at rest and in transit, authentication, and authorization.
+
+- **Data Security Measures**:
+  - Authentication and authorization control access to data.
+  - Encryption protects data at rest and in transit (e.g., HTTPS, SSL, TLS).
+  - Monitoring and intelligence systems provide audit history and alerts for security violations.
+
+- **Enterprise Security Policy**:
+  - Essential for aligning business, IT, and stakeholders towards security goals.
+  - Involves people, policy, processes, systems, and tools.
+
+- **End-to-End Security Monitoring**:
+  - Vital for proactive identification and reaction to security violations.
+  - Provides complete audit history, compliance reports, and alerts for timely response.
+
+
+
+
+
+- **Data Gathering Methods and Tools**:
+  - **SQL (Structured Query Language)**:
+    - Used for querying relational databases.
+    - Offers commands for retrieving, grouping, sorting, and limiting results.
+
+  - **Non-relational Databases**:
+    - Can be queried using SQL or SQL-like tools.
+    - Examples: CQL for Cassandra, GraphQL for Neo4J.
+
+  - **Application Programming Interfaces (APIs)**:
+    - Invoked from applications to access data endpoints.
+    - Used for data extraction and validation.
+
+  - **Web Scraping**:
+    - Extracts specific data from web pages based on defined parameters.
+    - Used for extracting text, contact information, images, videos, etc.
+
+  - **RSS Feeds**:
+    - Captures updated data from online forums and news sites.
+
+  - **Data Streams**:
+    - Aggregates constant streams of data from instruments, IoT devices, social media, etc.
+
+  - **Data Exchange Platforms**:
+    - Facilitate exchange of data between providers and consumers.
+    - Examples: AWS Data Exchange, Crunchbase, Lotame.
+
+- **Data Importing Methods**:
+  - **Relational Databases**:
+    - Suitable for structured data with a defined schema.
+    - Stores data from OLTP systems, spreadsheets, etc.
+
+  - **NoSQL**:
+    - Stores semi-structured and unstructured data.
+    - Supports JSON for web services and semi-structured data.
+
+  - **Data Lakes**:
+    - Store and manipulate large volumes of unstructured data.
+    - Accommodate all data types and schema.
+
+- **Tools and Methods for Importing Data**:
+  - **ETL Tools and Data Pipelines**:
+    - Provide automated functions for importing data.
+    - Examples: Talend, Informatica, Python, R libraries.
+
+
+
+- **Data Wrangling and Transformation**:
+  - **Structuring**:
+    - Change the form and schema of data.
+    - Combine data from different formats.
+    - Examples: Joins, Unions, Normalization, Denormalization.
+
+  - **Cleaning**:
+    - Fix irregularities in data.
+    - Detect issues and errors.
+    - Examples: Handling missing values, duplicate data, irrelevant data.
+  
+  - **Data Profiling and Visualization**:
+    - Inspect data structure, content, and anomalies.
+    - Visualize data to spot outliers.
+    - Examples: Identifying blank/null values, duplicate data, outliers.
+
+- **Common Data Cleaning Tasks**:
+  - **Missing Values**:
+    - Filter out or impute missing values.
+  
+  - **Duplicate Data**:
+    - Remove repeated data points.
+
+  - **Irrelevant Data**:
+    - Exclude data not relevant to the analysis.
+
+  - **Data Type Conversion**:
+    - Ensure values are stored in appropriate data types.
+
+  - **Standardization**:
+    - Standardize strings, date formats, units of measurement.
+
+  - **Syntax Errors**:
+    - Rectify syntax errors like white spaces, typos, format inconsistencies.
+
+  - **Outliers**:
+    - Identify and handle values vastly different from other observations.
+
+- **Summary**:
+  - Data wrangling involves transforming and cleaning raw data for analysis.
+  - Techniques include structuring, cleaning, and handling data anomalies.
+  - Data profiling and visualization aid in identifying issues.
+
+
+- **Popular Data Wrangling Software and Tools**:
+  - **Excel Power Query / Spreadsheets and Add-ins**:
+    - Features and formulae for identifying issues, cleaning, and transforming data.
+    - Add-ins like Microsoft Power Query and Google Sheets Query function enhance data manipulation capabilities.
+
+  - **OpenRefine**:
+    - Open-source tool for importing and exporting data in various formats.
+    - Cleans, transforms, and extends data with web services.
+
+  - **Google DataPrep**:
+    - Intelligent cloud data service for visually exploring, cleaning, and preparing structured and unstructured data.
+    - Fully managed service with automatic detection of schemas, data types, and anomalies.
+
+  - **Watson Studio Refinery (IBM Data Refinery)**:
+    - Discovers, cleanses, and transforms data with built-in operations.
+    - Flexibility to explore data from different sources and automatic enforcement of data governance policies.
+
+  - **Trifacta Wrangler**:
+    - Interactive cloud-based service for cleaning and transforming messy, real-world data.
+    - Known for collaboration features allowing simultaneous work by multiple team members.
+
+  - **Python**:
+    - **Libraries and Packages**:
+      - **Jupyter Notebook**: Open-source web application for data cleaning, transformation, statistical modeling, and visualization.
+      - **Numpy**: Basic package for fast, versatile, and easy-to-use numerical operations on arrays and matrices.
+      - **Pandas**: Designed for fast and easy data analysis operations, including merging, joining, and transformation of large data sets.
+      - **Other Libraries in Python**: Dplyr, Data.table, Jsonlite for specific data wrangling tasks.
+
+- **Considerations for Choosing Data Wrangling Tools**:
+  - Supported data size and structures.
+  - Cleaning and transformation capabilities.
+  - Infrastructure needs.
+  - Ease of use and learnability.
