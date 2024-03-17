@@ -915,26 +915,64 @@ Data Governance is a collection of principles, practices, and processes to maint
 ## Data Lifecycle Considerations
 
 - **Data Acquisition:**
-  - Legal basis for data collection.
-  - Intended use communicated internally and externally.
+    - establish What data needs to be collected and the contracts
+and consent that give you a legal basis for procuring this data. The intended use of this data, published as
+a privacy policy and communicated internally and with individuals whose data is being collected. The amount of data you need to meet your defined
+purposes. For example, does the email address meet your
+purpose, or do you also need to have the phone numbers and pin codes?  
+    - Legal basis for data collection.
+    - Intended use communicated internally and externally.
 - **Data Processing:**
+  - you will be
+required to establish The details of how you are going to process
+personal data. And your legal basis for the processing of
+personal data, such as a contract or consent 
   - Legal basis for data processing.
 - **Data Storage:**
+  - you will be required
+to establish Where the data will be stored, including specific
+measures that will be taken to prevent internal and external security breaches
   - Security measures to prevent breaches.
 - **Data Sharing:**
+  - you will establish Which third-party vendors in your supply chain
+may have access to the data you are collecting. as well how will you hold them contractually
+accountable to the same regulations you are liable for
   - Accountability of third-party vendors.
 - **Data Retention and Disposal:**
+  - you will be required to establish What policies and processes you will follow
+for the retention and deletion of personal data after a designated time. And how will you ensure that in the case of
+data deletion, it will be removed from all locations, including third-party systems?
   - Policies for data retention and deletion.
 
 ## Tools for Compliance
 
 - **Authentication and Access Control:**
+  - are designed to verify
+that you are who you say you are. Access control systems ensure that authorized
+users have access to resources, both systems and data, based on their user group and role. Databases, for example, have the concept of
+roles and privileges so only authorized users and applications can access specific objects,
+such as tables or rows or columns, in a database
   - Layered authentication.
   - Role-based access control.
 - **Encryption and Data Masking:**
+  - data is converted to an
+encoded format that can only be legible once it is decrypted via a secure key. Encryption of data is available both for data at rest, as it resides in the storage
+systems, and data in transit, as it moves through browsers,
+services, applications, and storage systems.
+  - Data masking provides anonymization of data
+for downstream processing and pseudonymization of data. Using Anonymization, the presentation layer
+is abstracted without changing the data in the database itself. For example, replacing characters with symbols
+when they are displayed on the screen.
   - Data encryption at rest and in transit.
   - Anonymization and pseudonymization.
+    - Pseudonymization of data is a de-identification
+process where personally identifiable information is replaced with artificial identifiers so
+that a data set cannot be traced back to an individual's identity—for example, replacing
+the name with a random value from the names dictionary
 - **Hosting Options:**
+  - Hosting options in on-premise and cloud systems
+that comply with the requirements and restrictions for international data transfers. Monitoring and Alerting functionalities Security monitoring helps to proactively monitor,
+track, and react to security violations across infrastructure, applications, and platforms.
   - Compliant on-premise and cloud systems.
 - **Monitoring and Alerting:**
   - Proactive security monitoring.
@@ -942,6 +980,9 @@ Data Governance is a collection of principles, practices, and processes to maint
   - Immediate breach alerts.
 - **Data Erasure:**
   - Permanent data clearing to prevent retrieval.
+  -  is a software-based method of
+permanently clearing data from a system by overwriting. This is different from a simple deletion of
+data since deleted data can still be retrieved
 
 In summary, data governance and compliance are critical throughout the data lifecycle. Tools and technologies play a crucial role in implementing governance frameworks.
 
