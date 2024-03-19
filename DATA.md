@@ -986,4 +986,88 @@ data since deleted data can still be retrieved
 
 In summary, data governance and compliance are critical throughout the data lifecycle. Tools and technologies play a crucial role in implementing governance frameworks.
 
-  
+## API
+
+
+- In this video we will discuss Application Program Interfaces (API) for short. Specifically, we will discuss:
+  - What is an API
+  - API Libraries
+  - REST API, including:
+    - Request and Response
+    - An Example with PyCoinGecko
+- An API lets two pieces of software talk to each other. For example, you have your program, you have some data, and you have other software components. You use the API to communicate with the other software components via inputs and outputs. Just like a function, you don’t have to know how the API works, but just its inputs and outputs.
+- Pandas is actually a set of software components, much of which are not even written in Python. You have some data and a set of software components. We use the pandas API to process the data by communicating with the other software components.
+- Let’s clean up the diagram. When you create a dictionary, and then create a pandas object with the Dataframe constructor, in API lingo, this is an “instance.” The data in the dictionary is passed along to the pandas API. You then use the dataframe to communicate with the API. When you call the method head, the dataframe communicates with the API displaying the first few rows of the dataframe. When you call the method mean, the API will calculate the mean and return the values.
+- REST APIs are another popular type of API; they allow you to communicate through the internet, allowing you to take advantage of resources like storage, access more data, artificial intelligent algorithms, and much more. The RE stands for Representational, the S stands for State, the T stands for Transfer. In REST APIs, your program is called the client. The API communicates with a web service you call through the internet. There is a set of rules regarding Communication, Input or Request, and Output or Response. Here are some common terms:
+  - You or your code can be thought of as a client.
+  - The web service is referred to as a resource.
+  - The client finds the service via an endpoint.
+  - The client sends requests to the resource, and the resource (web service) sends a response to the client.
+- HTTP methods are a way of transmitting data over the internet. We tell the REST APIs what to do by sending a request. The request is usually communicated via an HTTP message. The HTTP message usually contains a JSON file. This contains instructions for what operation we would like the service to perform. This operation is transmitted to the web service via the internet. The service performs the operation. In the similar manner, the web service returns a response via an HTTP message, where the information is usually returned via a JSON file. This information is transmitted back to the client.
+- Cryptocurrency data is excellent to be used in an API because it is constantly updated and is vital to cryptocurrency trading. We will use the Py-Coin-Gecko Python Client/Wrapper for the Coin Gecko API, updated every minute by Coin-Gecko. We use the Wrapper/Client because it is easy to use so you can focus on the task of collecting data. We will also introduce pandas time series functions for dealing with time series data.
+- Using Py-Coin-Gecko to collect data is quite simple. All we need is to install and import the library, create a client object, and finally use a function to request our data. In this function, we are getting data on bitcoin, in U.S. Dollars, for the past 30 days. In this case, our response is a JSON expressed as a python dictionary of nested lists including price, market cap, and total volumes which contain the unix timestamp and the price at that time. We are only interested in price so that is what we will select using the key price.
+- To make things simple, we can convert our nested list to a DataFrame, with the columns timestamp and price. It's difficult to understand the column timestamp. We will convert it to a more readable format using the pandas Function to_datetime. Using the to_datetime function, we create readable time data, the input is the timestamp column unit of time is set to milliseconds. We append the output to the new column date.
+- We would like to create a candlestick plot. To get the data for the daily candlesticks we will group by the date to find the minimum, maximum, first, and last price of each day. Finally, we will use plotly to create the candlestick chart and plot it. Now we can view the candlestick chart by opening the HTML file and clicking trust HTML in the top left of the tab. It should look something like this.
+
+
+
+## ETL 
+
+- Define the Extract, Transform, Load process or ETL process
+- Explain the correct order of ETL functions
+- Write a simple ETL program
+
+Have you ever wondered how data was collected from multiple sources and combined to become a single source of information? This type of data collection is called Batch processing, and today we will be exploring a type of batch processing called Extract, Transform and Load.
+
+Extract, Transform and Load or (ETL) does exactly what the name implies. It is the process of extracting large amounts of data from multiple sources and formats and transforming it into one specific format before loading it into a database or target file.
+
+Let’s use the following block diagram to represent the ETL pipeline:
+
+
+For example, let’s say you are the owner of a start-up that has built an AI to predict if someone is at Risk for diabetes using height and body weight. Some of your data is in CSV format, the other data is JSON files. You need to Extract all this data into one file so the AI can read it. Your data is in imperial but the AI uses metric units so you must transform it. The AI only reads CSV data in one big file, so you need to load the data as CSV.
+
+Let’s implement the following ETL with Python.
+
+### Extraction Step
+
+- Discuss the `glob` function from the `glob` module.
+  - Input: File extension
+  - Output: List of files with that particular extension
+- Write a function to extract CSV files of names, height, and weight.
+  - Input: File name of the `.csv` file
+  - Output: Dataframe
+- Write a function to extract JSON files.
+  - Input: Name of the `.json` file
+  - Output: Dataframe
+
+The `extract` function will extract large amounts of data from multiple sources in batches. We create an empty dataframe with the column names assigned.
+
+#### Process to Extract the `.csv` File:
+
+1. Find all CSV files using the `glob` function.
+2. Append CSV files to the dataframe in each iteration of the loop.
+3. Review the parameter `ignore_index="True"`.
+
+This section of code appends the JSON files to the dataframe. The parameter `ignore_index` sets the index in the order each column was appended to the dataframe.
+
+### Transformation Step
+
+This function will convert the column height from inches to millimeters, and the column weight from pounds to kilograms.
+
+### Loading and Logging
+
+Now that we have collected and defined the data, it is time to load it into the target file. We save the pandas dataframe as a CSV. Before completing our task, we create a logging entry to attach a timestamp to each part of the process.
+
+### Conclusion
+
+Now that we have defined all of the code necessary to run the ETL process on the selected data, the last thing we need to do is call all of the functions. We first start by calling the `extract_data` function. The data received from this step will then be transferred to the second step of transforming the data. After this has completed the data is then loaded into the target file. Also, note that before and after every step the time and date for start and completion has been added.
+
+In this video, you learned:
+
+- How to write a simple Extract function.
+- How to write a simple Transform function.
+- How to write a simple Load function.
+- How to write a simple Logging function.
+
+Check out the labs for more.
+
