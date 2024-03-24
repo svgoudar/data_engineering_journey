@@ -584,3 +584,43 @@ In transactional systems (OLTP), where data is both read and written frequently,
 
 In analytical (OLAP) systems, where the usage is mostly read only, databases are optimized for read performance rather than write integrity, hence the data may have undergone some de-normalization to a lower normal form before being loaded into the analytical system such as a data warehouse. In data warehousing, Data Engineers are focused on performance, which can benefit from having fewer tables to process.
   ![](snaps/Norm_OLPT_OLAP.png)
+
+
+
+Relational Model Constraints
+
+
+
+- Entity Integrity Constraint:
+  - Identifies each tuple in a relation with a primary key, ensuring uniqueness.
+  - No attribute participating in the primary key can accept NULL values.
+  - Prevents duplicate values in a table.
+![img.png](snaps/Entity.png)
+  ![img.png](snaps/entiy_1.png)
+- Referential Integrity Constraint:
+  - Defines relationships between tables and ensures their validity using Primary Keys and Foreign Keys.
+  - Ensures that relationships between tables remain valid.
+  ![img.png](snaps/Refer.png)
+- Semantic Integrity Constraint:
+  - Ensures the correctness of the meaning of the data.
+  - Guarantees that data has meaningful interpretations.
+  ![img.png](snaps/Semantic.png)
+- Domain Constraint:
+  - Specifies permissible values for a given attribute.
+  - Ensures that attribute values adhere to defined rules or formats.
+![img.png](snaps/Domain.png)
+- Null Constraint:
+  - Specifies that attribute values cannot be null.
+  - Ensures that required attributes have values assigned to them.
+  ![img.png](snaps/null.png)
+- Check Constraint:
+  - Enforces domain integrity by limiting accepted values for an attribute.
+  - Restricts the range of values that can be assigned to an attribute.
+  ![img.png](snaps/Check.png)
+In this video, you learned that:
+  - Entity Integrity Constraint ensures the primary key is a unique value that identifies each tuple (or row).
+  - Referential integrity constraint defines relationships between tables.
+  - Semantic Integrity Constraint refers to the correctness of the meaning of the data.
+  - Domain Constraint specifies the permissible values for a given attribute.
+  - Null Constraint specifies that attribute values cannot be null.
+  - Check Constraint limits the values that are accepted by an attribute.
