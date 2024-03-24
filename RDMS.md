@@ -154,3 +154,84 @@
   - Building blocks of a relationship include entities, relationship sets, and crows foot notations.
   - One-to-one, one-to-many, and many-to-many relationships differ in the association between entities.
   - Understanding these relationships helps in modeling data effectively.
+
+
+### Data Types
+
+
+- Welcome to Data Types. After watching this video, you will be able to:
+  - Explain what data types are.
+  - Explain how data types are used in a database.
+  - Identify some common data types.
+  - Describe the advantages of using appropriate data types.
+
+- **Database Table Representation:**
+  - Represents a single entity with columns as attributes.
+  - Each column should contain data of the same type.
+
+- **Defining Data Types:**
+  - Data type controls the type of data a column can store.
+  - Different database management systems may have variations but generally support a standard set.
+
+- **Common Data Types in RDBMS:**
+  - **Character String Data Types:**
+    - Fixed-length (e.g., CHAR(10)) and variable-length (e.g., VARCHAR).
+  - **Numeric Data Types:**
+    - Integer types (e.g., INT, SMALLINT, BIGINT) and decimal types (e.g., DECIMAL, NUMERIC).
+  - **Date/Time Data Types:**
+    - Dates, times, timestamps (e.g., DATE, TIME, DATETIME).
+  - **Other Common Data Types:**
+    - Boolean (e.g., BOOLEAN), binary string, large object (LOB), XML.
+
+- **Advantages of Using Appropriate Data Types:**
+  - Prevents incorrect data insertion.
+  - Facilitates accurate sorting and selection of data.
+  - Enables numeric calculations and standard function usage.
+
+- **Custom Data Types:**
+  - Relational databases allow creating custom or user-defined data types (UDTs) derived from built-in types.
+
+- **Conclusion:**
+  - Data types define the type of data stored in a column.
+  - Choosing the correct data type offers several advantages.
+
+### Relation Models
+
+- **Welcome to Relational Model Concepts.** After watching this video, you will be able to:
+  - Identify various set operations.
+  - Describe the properties and aspects of relations.
+  - Explain the difference between a relational schema and a relational instance.
+  - Define relational terms such as degree and cardinality.
+
+- **Sets and Relations:**
+  - **Sets:**
+    - Collections of unique elements without a specified order.
+    - Basic operations include membership, subsets, union, intersection, and difference.
+    ![](snaps/set_operations_1.png)
+    ![](snaps/set_operations_2.png)
+    ![](snaps/set_operations_3.png)
+    
+  - **Relations:**
+    - Describe connections between elements of sets.
+    - Common types include binary relations and ordered pairs.
+    - Properties: reflexivity, symmetry, transitivity, and antisymmetry.
+    ![](snaps/property_relations_1.png)
+    ![](snaps/property_relarions_2.png)
+
+- **Relational Concepts:**
+ ![](snaps/relation_components.png)
+  - **Relation Schema:**
+    - Specifies the structure of a relation including column names and types (attributes).
+    ![](snaps/relation_schema.png)
+  - **Relation Instance:**
+    - Represents the actual data stored in the table, consisting of rows (tuples) and columns.
+    ![](snaps/relation_instance.png)
+  - **Degree and Cardinality:**
+    - Degree: Number of attributes or columns in a relation.
+    - Cardinality: Number of tuples or rows in a relation.
+
+- **Conclusion:**
+  - Sets and relations are fundamental concepts in the relational model.
+  - Understanding key set operations and relation properties is crucial.
+  - Relational schema and instance delineate the structure and data of relations.
+  - Degree and cardinality are essential measures in analyzing relations.
