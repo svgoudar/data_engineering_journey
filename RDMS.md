@@ -467,3 +467,53 @@ In this video, you learned that PostgreSQL is an open-source, object-relational 
   - May bypass database logging for higher performance.
   - Useful for large volumes of data where referential or table constraints checking is not necessary.
 
+
+
+## Database Objects and Hierarchy
+
+Welcome to Database Objects and Hierarchy. After watching this video, you will be able to:
+
+- Recall the hierarchy of database objects
+- Describe an instance of a database
+- Define the term relational database
+- Explain when to create a new database
+- Define the term schema
+- Compare user schemas and system schemas
+- Describe a database partition
+- List commonly used database objects
+
+Relational Database Management Systems (RDBMSes) contain many objects that Database Engineers and Database Administrators must organize. Storing tables, constraints, indexes, and other database objects in a hierarchical structure allows database administrators to manage security, maintenance, and accessibility. This example hierarchy gives you an overview of how RDBMSes are structured, although slight variations may occur between products. 
+
+- Instance:
+  - A logical boundary for organizing the database and its objects.
+  - Can contain multiple databases.
+  ![](snaps/db_instances.png)
+- Schema:
+  - A logical grouping of objects within a database.
+  - Prevents ambiguous references and defines object naming conventions.
+  ![](snaps/schemas.png)
+- Database Objects:
+  - Tables, constraints, and indexes reside within a schema.
+  ![](snaps/db_objects.png)
+  
+An instance is a logical boundary for a database or set of databases where you organize database objects and set configuration parameters. A relational database is a set of objects used to store, manage, and access data. Relationships between tables reduce redundant data and improve data integrity. 
+
+- Schema:
+  - Provides a way to logically group tables, views, triggers, functions, etc.
+  - Helps distinguish between objects with the same name.
+- User Schema:
+  - Contains database objects like tables, views, functions.
+- System Schema:
+  - Contains configuration information and metadata for the database.
+
+You can split very large tables across multiple partitions to improve performance. Database objects are items that exist within the database, such as tables, constraints, indexes, views, and aliases.
+![](snaps/partitions.png)
+
+In this video, you learned that:
+- An instance is a logical boundary for organizing a database.
+- A relational database stores, manages, and accesses data.
+- Schemas logically group database objects.
+- User schemas contain database objects, while system schemas contain configuration information.
+- Large tables can be split across multiple partitions for performance.
+- Database objects include tables, constraints, indexes, views, and aliases.
+
