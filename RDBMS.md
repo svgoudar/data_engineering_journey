@@ -556,3 +556,31 @@ You should only create an index when you will gain more from the advantages that
 ![](snaps/index_benefits.png)
 
 
+
+## Normalization
+
+When you keep records of data, such as books in a bookshop, you will inevitably have some inconsistencies and duplicate information. Such duplication can cause extra work and inconsistencies if the data is updated because you must change it in more than one place. Normalization is the process of organizing your data to reduce redundant data, often by dividing larger tables into multiple related tables. Normalization helps speed up transactions because you perform updates, additions, and deletes only once on a normalized database. It also improves data integrity because it reduces the chance of a change being made in one place but not in another.
+![](snaps/normalization.png)
+As you begin the normalization process, it’s important to recognize that you focus on normalizing each table until you reach the required normal form level. Normalization usually results in creating more tables, and once all the tables are normalized, you will have a normalized database.
+
+There are several forms of normalization, and most data engineers will need to be familiar with first normal form, second normal form, and third normal form.
+
+- First Normal Form (1NF):
+  - Each row must be unique, and each cell must contain only a single value.
+    ![](snaps/1_NF.png)
+    ![](snaps/1_NF_1.png)
+    ![](snaps/1_NF_2.png)
+- Second Normal Form (2NF):
+  - Specifies that you should separate groups of values that apply to multiple rows by creating new tables.
+    ![](snaps/2NF_1.png)
+    ![](snaps/2NF_2.png)
+    ![](snaps/22_NF.png)
+- Third Normal Form (3NF):
+  - Eliminate any columns that do not depend on the key.
+  ![](snaps/3_NF.png)
+  ![](snaps/3NF_1.png)
+  ![](snaps/3NF_3.png)
+In transactional systems (OLTP), where data is both read and written frequently, you typically normalize the data to 3NF. OLTP systems need to efficiently process and store transactions, as well as query transactional data, and normalizing the data to 3NF helps the database to efficiently process and store individual transactions.
+
+In analytical (OLAP) systems, where the usage is mostly read only, databases are optimized for read performance rather than write integrity, hence the data may have undergone some de-normalization to a lower normal form before being loaded into the analytical system such as a data warehouse. In data warehousing, Data Engineers are focused on performance, which can benefit from having fewer tables to process.
+  ![](snaps/Norm_OLPT_OLAP.png)
