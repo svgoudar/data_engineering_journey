@@ -517,3 +517,42 @@ In this video, you learned that:
 - Large tables can be split across multiple partitions for performance.
 - Database objects include tables, constraints, indexes, views, and aliases.
 
+
+
+
+## Primary Keys and Foreign Keys
+
+
+You can use a primary key to uniquely identify every row in a table. In some tables, the choice of primary key is easy because it is a naturally occurring unique attribute of an entity. For example, the book ID of a book or the employee ID number of a staff member. If your table doesn’t have an existing unique attribute, you can add a column to the table to serve as the primary key. Or if a combination of two attributes uniquely identifies each row, you can create a primary key across the two columns. For example, where employees have a unique identifier within their work site, you can use the combination of their site ID and employee ID. Each table can only have one primary key. 
+![](snaps/foreign_keys_1.png)
+![](snaps/fk_syntax.png)
+![](snaps/fk_syntax_2.png)
+
+You can create a primary key when you create the table by using the `PRIMARY KEY` clause of the `CREATE TABLE` statement. In the parenthesis for the `PRIMARY KEY` clause, state the name of the column or columns that will be the primary key. Alternatively, you can create a primary key on an existing table by using the `ADD PRIMARY KEY` clause of the `ALTER TABLE` statement. And again in the parenthesis, state the name of the column or columns that will be the primary key. 
+
+You use primary and foreign keys to define the relationships between your tables. A foreign key is a column in a table which contains the same information as the primary key in another table. For example, the `Copy` table might list all books that the library owns. Therefore, the `book_id` of a copy of an individual book must exist in the `Book` table as a valid book. Where the library owns multiple copies of a popular book, the `book_id` of that particular book will appear multiple times in the `Copy` table. You can also specify that whenever you add a row to the `Copy` table, the `book_id` you use must already exist in the `Book` table.
+
+Similar to primary keys, you can create a foreign key when you create the table by using the `CONSTRAINT <constraint_name> FOREIGN KEY` clause of the `CREATE TABLE` statement. In the parenthesis for the `FOREIGN KEY` clause, state the name of the column or columns that will be the foreign key and then reference the table and primary key column that the foreign key links to. You can also use the `RULE` clause to define what action to take if a row in the parent table, that is the table with the primary key, is updated or deleted. 
+
+
+## Indexes
+
+
+
+Usually, when you add data to a table it is appended to the end of the table, however, there is no guarantee of this and there is no inherent order to the data. So when you select a particular row from that table, the processor must check each row in turn until it finds the one that you want. On a large table, this can become a very slow way of locating a row. Also when you select multiple rows, unless you specify a sort order in your SELECT statement they may be returned in an unordered state. Because you often want to return the rows in a particular order or select a subset of sequential rows, you can create an index on a table to easily locate the specific row or set of rows you require. An index works by storing pointers to each row in the table so when you request a particular row, the SQL processor can use the index to quickly locate the row. This is similar to how you use the index in a book to quickly find a particular section of the book. The index is ordered by values within the unique key upon which it is based. By default, when you create a primary key on a table an index is automatically created on that key, but you can also create your own indexes on regularly searched columns. Use the CREATE INDEX statement to define the index, specifying the index name, its uniqueness, and the table and column on which to base it.
+
+![](snaps/index.png)
+Indexes provide the database user with many benefits, including:
+- Improved performance of SELECT queries when searching on an indexed column. Because the index provides a quick route to locate rows matching the search term, the results are returned quicker than when it has to check every row in the table.
+- Reduce need to sort data. If you regularly require rows in a specific order, using an index can eliminate the need for sorting the rows after they are located.
+- Guaranteed uniqueness of rows. If you use the UNIQUE clause when you create the index, you can be sure that updates and insertions will not create duplicate entries in that column while not bearing the overhead of having to check this against each row in the table.
+
+They do however have a few disadvantages:
+- Each index that you create uses disk space, in the same way that adding indexes increases the number of pages in a book.
+- Decreased performance of INSERT, UPDATE, and DELETE queries. Because the rows in an indexed table are sorted according to the index, adding or removing rows can take longer than in a non-indexed table.
+
+You should only create an index when you will gain more from the advantages that you lose from the disadvantages. For example, on a table that rarely has rows inserted or updated, but is regularly used in SELECT queries and WHERE clauses. If you create many indexes on a table, you can actually negate the performance benefits in the same way that indexing every word in a book would result in an unhelpful index.
+
+![](snaps/index_benefits.png)
+
+
