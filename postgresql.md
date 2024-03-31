@@ -55,7 +55,6 @@ To create a materialized view:
 
 After creating a materialized view, you need to refresh it with the current rows from the underlying tables before using it to access the data it holds. You can refresh the data in the view at any time to update it with the data in the underlying tables.
 
-In this video, you learned that:
 - Views are an alternative way of representing data
 - You can use views to limit access to sensitive data and simplify data retrieval
 - Materialized views store the result set for quicker subsequent access

@@ -624,3 +624,40 @@ In this video, you learned that:
   - Domain Constraint specifies the permissible values for a given attribute.
   - Null Constraint specifies that attribute values cannot be null.
   - Check Constraint limits the values that are accepted by an attribute.
+
+## Database Design
+
+![](snaps/Database_design.png)
+- Welcome to Approach to Database Design
+After watching this video, you will be able to:
+  - Describe the importance of good database design
+  - Explain the database design process
+  - Describe the purpose of an ERD tool
+  
+A well-designed database is crucial to the success of any data-driven project. The design of the database contributes to the integrity of data, the reduction of redundant data, application performance, and user satisfaction, which are all key markers of a successful project. As such, it is essential that you spend the time up-front designing your database to avoid costly problems at a later date.
+
+There are three key steps in the database design process:
+- Requirements analysis – where you analyse the data you are working with and the requirements for the use of that data
+- Logical design – where you plan how to organise your data
+- Physical design – where you plan how to implement your logical design in the database management system you will be using
+
+During the first stage, you gather and analyze real-world business information and policies. You need to identify the base objects in the data and the relationships between these objects. For example, in a library scenario, a person borrows a book. You also need to identify the information associated with these objects that you will use to interact with them. For a book, this could be the title, description, ISBN, and authors. And for a person, it could be their name, address, and contact details. How you obtain this information can vary from project to project, but is likely to include:
+- Reviewing any existing stores of this data, be that in a database, other electronic format, or even a paper-based system.
+- Interviewing users to determine how the business currently uses this data.
+- Interviewing users and potential users to determine how the business could make better use of this data.
+
+If the data currently resides in a database, when reviewing the existing structure, be sure to use it as a source of information about the data rather than a starting template for your own database design. The output from your requirements analysis could be a report, a data diagram, or a presentation that you can share with stakeholders to validate your understanding of the system.
+
+In the logical design phase, you take the requirements you identified in the analysis stage and map them to entities, attributes, and relationships. However, logical models should not specify any technical requirements, so you should not be thinking about any implementation considerations at this stage.
+
+The objects that you identified in the previous stage become entities. Generally, entities are people, events, locations, or things, and if you find you have an object that doesn’t fit into one of these categories, you should double-check that it really is an object rather than a characteristic of another object. The characteristics of the objects will become attributes. So the book object becomes a book entity and the person object becomes a person entity. At this stage, you should also think about the attributes of your entities. You may think of a person having a name, but in database terms it is better to think of them having a first name and a last name. This makes it easier to search on and sort by either first or last name. And although the requirements analysis identified that a person has an address, when you think about storing that address, you should divide it up into its constituent parts.
+
+When analyzing the requirements, you identified that a person borrows a book. However, a person may borrow many books and a book may be borrowed by many people, so this is a many-to-many relationship which can lead to ambiguity in a database. The easiest way to solve this is by creating two separate one-to-many relationships by introducing an associative entity in between the existing ones. In the book-to-person scenario, you can add in a loan entity. One person can have many loans and one book can be loaned many times. The loan entity will contain attributes from the book table and the person table, as well as some loan-specific ones. You could relate these entities by their matching attributes; however, none of those are guaranteed to be unique. In the Book entity, the ISBN will be unique, so you could use that as the primary key. You can then use the ISBN instead of the book title in the Loan entity to identify the borrowed book. There are no unique attributes in the person entity, so you can add an identifier attribute to that entity and use that to link the loan to the person. And you can add a loan id to the Loan entity to uniquely identify each loan.
+
+Now that you have a view of your entities and attributes, you can consider normalization. Most OLTP systems are normalized to the third normal form for optimal transactional performance. Whereas OLAP systems are generally denormalized to enhance read performance. To adhere to the 1st normal form, you need to remove the potential of two (or more) authors' names being listed in the authors attribute for an individual book. One option is to split this into author 1 and author 2 attributes; however, there’s no guarantee of a maximum number of authors for a book and this would not adhere to 2nd normal form. So a better way is to create a separate authors entity with a many-to-one relationship to the Book entity. When you have finished normalizing your entities, you can move on to the physical design stage – how your database will actually look. At this stage, you can start to consider the impact that your choice of database management system will have on your design. For example, the data types it supports, the naming rules it implements, and the indexes and constraints it supports. When you are thinking about naming rules, you should also consider implementing your own convention so that anyone working with your data will understand your schema. So the Person entity from your logical design will become a person table in your physical design with each attribute becoming a typed column and keys being defined. You can use an ERD designer to create your entity relationship diagrams. pgAdmin includes the ERD Tool in which you can design your ERD and then generate an SQL script that will create your database and objects based on your design.
+
+After watching this video, you will be able to:
+- It is important to spend time designing your database before you start the implementation
+- There are three stages of database design: requirements analysis, logical design, and physical design
+- Using an ERD designer can simplify the design process
+
