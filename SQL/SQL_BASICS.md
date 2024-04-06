@@ -71,7 +71,11 @@
    ALTER TABLE `learn_sql`.`movie` CHANGE COLUMN `date` `dateddd` BLOB NULL DEFAULT NULL ;
   
    ALTER TABLE `learn_sql`.`movie` CHANGE COLUMN `date` `date` datetime DEFAULT current_timestamp ;
-  
+   
+   ALTER TABLE movie RENAME COLUMN NAME TO FIRST_NAME;
+   
+   ALTER TABLE table_name CHANGE COLUMN old_name TO new_name;
+
    ALTER TABLE `learn_sql`.`movie` MODIFY COLUMN `date` BLOB NULL DEFAULT NULL ;
   
    ALTER TABLE Student ADD (AGE number(3),COURSE varchar(40));
@@ -217,4 +221,21 @@ RELEASE SAVEPOINT SP1
 This command is used to remove a SAVEPOINT that you have created.
 
 
+```
+
+### COPY
+
+```sql
+
+create table movie_copy as select * from movie; -- copy the table with the data
+create table movie_copy_copy as select * from movie where 1 = 2; -- copy the table without data
+create table movie_names  as select movie_name , release_year from movie;
+```
+
+### Temporary Table
+
+- Temporary Tables are most likely as Permanent Tables. Temporary Tables are Created in TempDB and are automatically deleted as soon as the last connection is terminated. Temporary Tables helps us to store and process intermediate results. Temporary tables are very useful when we need to store temporary data.
+
+```sql
+create temporary table movie_temp as select * from movie limit  1;
 ```
