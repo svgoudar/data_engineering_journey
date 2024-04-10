@@ -85,3 +85,70 @@ select UCASE ("GeeksForGeeks"); -- 'GEEKSFORGEEKS'
 SELECT SUBSTRING('GeeksForGeeks.org', 9, 1); -- G
 
 ```
+
+- ### NUMERIC FUNCTION
+
+```sql
+SELECT ABS(-243.5);
+SELECT ACOS(0.25);
+SELECT ASIN(0.25);
+SELECT CEIL(25.75);
+SELECT CEILING(25.75);
+SELECT COS(30);
+SELECT COT(6);
+SELECT DEGREES(1.5);
+SELECT EXP(1);
+SELECT FLOOR(25.75);
+SELECT GREATEST(30, 2, 36, 81, 125);
+SELECT LEAST(30, 2, 36, 81, 125);
+SELECT LN(2);
+SELECT LOG(2);
+SELECT LOG2(6);
+SELECT MOD(18, 4);
+SELECT PI();
+SELECT POWER(4, 2);
+SELECT RADIANS(180);
+SELECT TRUNCATE(7.53635, 2);
+```
+
+- ### STATISTICAL FUNCTION
+
+```sql
+select avg(votes) from movie;
+select sum(votes) from movie;
+select count(votes) from movie;
+select max(votes) from movie;
+select min(votes) from movie;
+select VARIANCE(votes) from movie;
+select stddev(votes) from movie;
+```
+
+- ### JSON VALIDATE
+
+```sql
+set @var='{
+"Information": 
+  {"SchoolDetails": 
+     [{"Name": "VidhyaMandhir"}, {"Name": "Chettinad"}, {"Name":"PSSenior"}]
+  }
+}'
+SET @document = '{}';
+SELECT JSON_SCHEMA_VALID( @var,@document); -- 1 if validation successfully else 0
+
+SELECT JSON_VALUE(@var,'$.Information.SchoolDetails[0].Name') as SchoolName;
+
+SELECT JSON_EXTRACT(@var,'$.Information.SchoolDetails') AS LISTOFSCHOOLS
+```
+
+- ### Conversion Function
+
+- Implicit and explicit type conversion are 2 types
+- Implicit : In this type of conversion, the data is converted from one type to another implicitly (by itself/automatically).
+
+  - Explicit:
+
+      ```sql
+        select convert(release_date, DATE) from movie;    
+    
+    
+      ```
