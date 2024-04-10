@@ -56,3 +56,11 @@
   - We can create a view using the CREATE VIEW statement and delete a view using the DROP VIEW statement.
   - We can update a view using the CREATE OR REPLACE VIEW statement.
   - WITH CHECK OPTION clause is used to prevent inserting new rows that do not satisfy the view’s filtering condition.
+
+
+- ### MATERIALiZED VIEWS (Indexed table)
+![img.png](materialized_views.png)
+Mysql doesnt support materialized views
+
+Notes:
+[Insertable and updatable views](https://dev.mysql.com/doc/refman/8.3/en/view-updatability.html)
