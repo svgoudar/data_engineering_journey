@@ -163,3 +163,44 @@ Information can be "lost in transformation" either intentionally or accidentally
 - Utilizes multiple streams to load data simultaneously, enhancing efficiency for large datasets or distant transfers.
 - Splits files into smaller chunks for concurrent loading to speed up the process.
 
+
+#  ETL USing shell scripting
+
+
+Extraction:
+
+Write a Bash script to call the get_temp API to extract the current temperature and append it to temperature.log.
+Ensure that only the last 60 readings are kept in temperature.log by overwriting the file with the most recent hour of data.
+Transformation:
+
+Use a Python script named get_stats.py that takes the temperature.log file as input, calculates hourly average, minimum, and maximum temperatures, and outputs these stats to a file, such as temp_stats.csv.
+Loading:
+
+Include in your Bash script a step that calls the load_stats API with temp_stats.csv to load the temperature stats into the reporting system.
+Scheduling:
+
+Make the Bash script executable using chmod.
+Schedule the Bash script to run every minute by creating a cron job.
+
+```shell
+
+#!/bin/bash
+
+# Extract the temperature reading and append to temperature.log
+get_temp >> temperature.log
+
+# Keep only the last 60 readings (most recent hour) in temperature.log
+tail -n 60 temperature.log > temp_buffer.log
+mv temp_buffer.log temperature.log
+
+# Transform the data by calculating stats and writing them to temp_stats.csv
+python3 get_stats.py temperature.log temp_stats.csv
+
+# Load the stats into the reporting system
+load_stats temp_stats.csv
+
+
+
+* * * * * /path/to/Temperature_ETL.sh
+
+```
