@@ -204,3 +204,4 @@ load_stats temp_stats.csv
 * * * * * /path/to/Temperature_ETL.sh
 
 ```
+![img.png](dags_with_cron.png)
