@@ -172,6 +172,7 @@ Apache Airflow is an open-source workflow management tool, backed by a vibrant c
 ![img.png](airflow_lifecycle.png)
 ![img.png](benefits.png)
 ![img.png](airflow_use_cases.png)
+![img.png](airflow_architecture.png)
 ## Task Lifecycle
 - **No status**: Task is not queued.
 - **Scheduled**: Task is ready to run.
