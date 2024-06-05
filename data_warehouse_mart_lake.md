@@ -394,3 +394,290 @@ The next time you're at a restaurant, think about the journey of your meal from 
 Thank you for watching. If you enjoyed this video and want to see more, please like and subscribe. If you have questions, please drop them in the comments below.
 
 
+
+# Data Warehouse Architecture Overview
+
+Welcome to **Data Warehouse Architecture Overview**. After watching this video, you will be able to:
+
+- List use cases that drive data warehouse design considerations.
+- Describe a general data warehousing architecture and list its component layers.
+- Distinguish between general and reference enterprise data warehouse architecture.
+- Describe reference architectures for two enterprise data warehouse platforms.
+
+![alt text](image-6.png)
+
+The details of the architecture of a data warehouse depend on the intended usage of the platform. Requirements can include:
+
+- Report generation and dashboarding.
+- Exploratory data analysis.
+- Automation and machine learning.
+- Self-serve analytics.
+
+Let’s start by considering a general architectural model for an **Enterprise Data Warehouse** (EDW) platform, which companies can adapt for their analytics requirements. In this architecture, you can have various layers or components, including:
+
+- Data sources (e.g., flat files, databases, and existing operational systems).
+- ETL layer for extracting, transforming, and loading data.
+- Optional staging and sandbox areas for holding data and developing workflows.
+- Enterprise data warehouse repository.
+- Data marts (known as a “hub and spoke” architecture when multiple data marts are involved).
+- Analytics layer and business intelligence tools.
+
+Data warehouses also enforce security for incoming data and data passing through to further stages and users throughout the network. Enterprise data warehouse vendors often create proprietary reference architecture and implement template data warehousing solutions that are variations on this general architectural model.
+
+A data warehousing platform is a complex environment with lots of moving parts. Thus, interoperability among components is vital. Vendor-specific reference architecture typically incorporates tools and products from the vendor’s ecosystem that work well together.
+
+## IBM-specific Reference Data Warehouse Architecture
+
+Each layer of the architecture performs a specific function:
+
+1. **Data Acquisition Layer:** Components to acquire raw data from source systems (e.g., human resources, finance, and billing departments).
+2. **Data Integration Layer:** Essentially a staging area, with components for extracting, transforming, and loading data into the data repository layer. It also houses administration tools and central metadata.
+3. **Data Repository Layer:** Stores the integrated data, typically employing a relational model.
+4. **Analytics Layer:** Often stores data in a cube format to make it easier for users to analyze it.
+5. **Presentation Layer:** Incorporates applications that provide access for different sets of users (e.g., marketing analysts, users, and agents). Applications consume the data through web pages and portals defined in the reporting tool or through web services.
+
+IBM reference architecture is supported and extended using several products from the **IBM InfoSphere suite**:
+
+- **IBM InfoSphere DataStage:** Scalable ETL platform for near real-time integration of all data types, on-premises, and in cloud environments.
+- **IBM InfoSphere MetaData Workbench:** Provides end-to-end data flow reporting and impacts analysis of information assets.
+- **IBM InfoSphere QualityStage:** Supports data quality and information governance initiatives.
+- **IBM Db2 Warehouse:** Family of highly performant, scalable, and reliable data management products.
+- **IBM Cognos Analytics:** Advanced business intelligence platform for generating reports, scoreboards, and dashboards, performing exploratory data analysis, and curating and joining data from multiple sources.
+
+In summary, you learned that:
+
+- An architectural model for a general data warehousing platform includes various components such as data sources, ETL pipelines, optional staging and sandbox areas, an enterprise data warehouse repository, optional data marts, and analytics and business intelligence tools.
+- Companies can modify general enterprise data warehouse architecture to suit their analytics requirements.
+- Vendors offer proprietary reference architecture based on the general model, which they test for interoperability among components.
+- An IBM enterprise data warehouse solution combines InfoSphere with Db2 Warehouse and Cognos Analytics.
+
+
+# Cubes, Rollups, and Materialized Views and Tables
+
+Welcome to **Cubes, Rollups, and Materialized Views and Tables**. After watching this video, you will be able to:
+
+- Relate what a data cube is in terms of star schema.
+- Discuss the terms slice, dice, drill up or down, roll up, and pivot in terms of data cubes.
+- Describe what a materialized view is.
+- Recall two use cases for materialized views.
+
+## Data Cube Example
+
+Let's use an example to illustrate the concept of a data cube. Here is a cube generated from an imaginary star schema for a Sales OLAP (online analytical processing system). The coordinates of the cube are defined by a set of dimensions, selected from the star schema. In this illustration, we are showing three dimensions, but data cubes can have many dimensions:
+
+- **Product categories**: Items sold
+- **State or Province**: Location items were sold
+- **Year**: Year these products were sold
+
+The cells of the cube are defined by a fact of interest from the schema, such as “total sales in thousands of dollars.” For example, "243" indicates "243 thousand dollars" for some given Product, State, and Year combination.
+
+## Operations on Data Cubes
+
+There are many operations you can perform on data cubes, such as:
+
+- **Slicing**: Selecting a single member from a dimension, resulting in a data cube with one less dimension. E.g., selecting the year 2018.
+- **Dicing**: Selecting a subset of values from a dimension, effectively shrinking the cube. E.g., selecting "Gloves," "T-shirts," and "Jeans" from the Product-Type dimension.
+- **Drilling Down**: Going into a particular member of a dimension to see more specific data. E.g., drilling down into “T-shirts” to see “Classic,” “Slim fit,” and “Regular fit.”
+- **Drilling Up**: The reverse of drilling down.
+- **Pivoting**: Rotating the data cube. E.g., interchanging year and product dimensions while keeping the State dimension fixed.
+- **Rolling Up**: Summarizing along a dimension by applying aggregations such as COUNT, MIN, MAX, SUM, and AVERAGE. E.g., calculating the average selling price of different T-shirt types across states.
+
+## Materialized Views
+
+A **materialized view** is essentially a local, read-only copy or snapshot of the results of a query. They can be used to:
+
+- Replicate data, for example in a staging database as part of an ETL process.
+- Precompute and cache expensive queries, such as joins or aggregations, for use in data analytics environments.
+
+Materialized views can be automatically refreshed to keep your query up-to-date. Refresh options include:
+
+- **Never**: Populated only when created, useful if data seldom changes.
+- **Upon request**: Manually refresh, e.g., after data changes, or scheduled refresh.
+- **Immediately**: Automatically refresh after every statement.
+
+### Creating a Materialized View
+
+Here is how to create a materialized view in Oracle using SQL statements:
+
+```sql
+CREATE MATERIALIZED VIEW My_Mat_View
+REFRESH FAST
+START WITH SYSDATE
+NEXT SYSDATE + 1
+AS SELECT * FROM my_table_name;
+```
+
+
+
+# Facts and Dimensional Modeling
+
+Welcome to **Facts and Dimensional Modeling**. After watching this video, you will be able to:
+
+- Define what facts are in the context of data warehousing.
+- Define what a fact table is.
+- Define what dimensions are in the context of data warehousing.
+- Define what a dimension table is.
+- Describe an example of a fact and its dimensions.
+
+## Facts and Dimensions
+
+Data can be lumped into two categories: Facts and dimensions.
+
+- **Facts**: Usually quantities which can be measured, such as temperature, number of sales, or millimeters of rainfall. Facts can also be qualitative in nature.
+- **Dimensions**: Attributes which can be assigned to facts, providing context and making facts useful.
+
+### Example: Weather Report
+
+Facts:
+- Temperature: 24°C
+- Humidity
+- Probability of precipitation
+- Wind speed
+- Qualitative facts like "partly cloudy" or "Clear with periodic clouds"
+
+Dimensions:
+- Location: "Kuala Lumpur, Malaysia"
+- Time: "Tuesday at 3 a.m."
+
+The statement "24°C in Kuala Lumpur, Malaysia on Tuesday, August 17th at 3:00 a.m." provides meaningful information by combining facts and dimensions.
+
+## Fact Tables
+
+A **fact table** consists of the facts of a business process and contains foreign keys to dimension tables.
+
+- Facts are usually additive measures or metrics, such as dollar amounts for individual sales transactions.
+- Fact tables can contain detail level facts or aggregated facts (summary tables).
+
+### Example: Sales Transactions
+
+A fact table for recording sales at a car dealership might include:
+- Sale date
+- Sale amount
+- Primary key: "Sale ID"
+
+## Types of Fact Tables
+
+- **Detail level fact tables**: Individual sales transactions.
+- **Summary tables**: Aggregated facts, such as quarterly sales totals.
+- **Accumulating snapshot fact tables**: Record events during a business process.
+
+### Example: Custom Computer Order
+
+An accumulating snapshot table might record:
+- Order date
+- Order amount
+- Payment date
+- Build start-date
+- Build end-date
+- Ship date
+- Unique "Order ID"
+
+## Dimension Tables
+
+A **dimension table** stores the dimensions of a fact and is joined to the fact table via a foreign key.
+
+### Types of Dimension Tables
+
+- **Product tables**: Describe products (make, model, color, size).
+- **Employee tables**: Describe employees (name, title, department).
+- **Temporal tables**: Describe time at the level of granularity (e.g., year, month, day).
+- **Geography tables**: Location data (country, state, city, postal code).
+
+### Example: Car Sales Schema
+
+Fact table for sales:
+- Sale date
+- Sale amount
+- Sale ID (primary key)
+
+Dimension tables:
+- **Vehicle table**: Attributes like Make and Model.
+- **Salesperson table**: Attributes like First and Last name.
+
+Foreign keys in the fact table link to dimension tables:
+- Vehicle ID
+- Salesperson ID
+
+
+# Data Modeling Using Star and Snowflake Schemas
+
+Welcome to **Data Modeling Using Star and Snowflake Schemas**. After watching this video, you will be able to:
+
+- Describe star schema modeling in terms of facts and dimensions.
+- Describe snowflake schema as an extension of star schema.
+- Distinguish star from snowflake schema in terms of normalization.
+
+## Star Schema
+
+A **star schema** is a type of data model used in data warehousing. It consists of:
+
+- A central **fact table** containing foreign keys that refer to the primary keys of **dimension tables**.
+- **Dimension tables** radiating from the central fact table, forming a star-like structure.
+
+### Key Components
+
+- **Fact Table**: Contains quantitative data and foreign keys to dimension tables.
+- **Dimension Tables**: Provide context for the facts, such as dates, products, and locations.
+
+### Example: Point-of-Sale (POS) Transactions
+
+1. **Business Process**: Point-of-sale transactions.
+2. **Granularity**: Individual line items from store receipts.
+3. **Dimensions**: Date and time, store name, products purchased, cashier, payment method, customer membership number.
+4. **Facts**: Transaction amount, quantity, discounts, sales tax, environmental fees, deposit fees.
+
+#### Fact Table: `pos_fact_table`
+- **POS ID**: Unique identifier for each line item.
+- **Transaction Amount**: Dollar amount.
+- **Quantity**: Number of items.
+- **Sales Tax**: Applied tax.
+- **Discount**: Applied discount.
+
+#### Dimension Tables
+- **Store Table**: Linked by `Store ID`.
+- **Product Table**: Linked by `Product ID`.
+- **Date Table**: Linked by `Date ID`.
+- **Cashier Table**: Linked by `Cashier ID`.
+- **Member Table**: Linked by `Member ID`.
+
+## Snowflake Schema
+
+A **snowflake schema** is an extension of the star schema. It involves normalizing the dimension tables.
+![alt text](image-7.png)
+### Key Concepts
+
+- **Normalization**: Separating levels or hierarchies of a dimension table into separate child tables.
+- **Hierarchy of Tables**: Creating multiple layers of dimension tables, reducing data redundancy.
+
+### Example: Extended POS Transactions
+
+#### Normalized Dimension Tables
+- **City Table**: Linked by `City ID` in the `Store Table`.
+- **State Table**: Linked by `State ID` in the `City Table`.
+- **Country Table**: Linked by `Country ID` in the `State Table`.
+- **Product Brand Table**: Linked by `Brand ID` in the `Product Table`.
+- **Product Category Table**: Linked by `Category ID` in the `Product Table`.
+- **Date Breakdown**: Separate tables for day, month, quarter.
+
+## Comparison: Star Schema vs. Snowflake Schema
+
+- **Star Schema**:
+  - Simpler, with fewer tables.
+  - Denormalized structure.
+  - Easier to query but may use more storage.
+
+- **Snowflake Schema**:
+  - More complex, with multiple layers of tables.
+  - Normalized structure.
+  - Reduces data redundancy and storage footprint but may require more complex queries.
+
+## Summary
+
+In this video, you learned that:
+
+- **Star Schema**: Consists of a central fact table and dimension tables, used for simple and efficient querying.
+- **Snowflake Schema**: A normalized version of the star schema, used to reduce data redundancy and storage needs.
+- **Design Considerations**: Involve identifying the business process, granularity, dimensions, and facts.
+- **Normalization**: Involves breaking down dimension tables into hierarchical levels.
+
+Both schemas have their advantages and are chosen based on the specific needs of the data warehousing environment.
