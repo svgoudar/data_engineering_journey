@@ -666,11 +666,13 @@ A **snowflake schema** is an extension of the star schema. It involves normalizi
   - Denormalized structure.
   - Easier to query but may use more storage.
 
+![alt text](image-8.png)
+
 - **Snowflake Schema**:
   - More complex, with multiple layers of tables.
   - Normalized structure.
   - Reduces data redundancy and storage footprint but may require more complex queries.
-
+![alt text](image-9.png)
 ## Summary
 
 In this video, you learned that:
@@ -681,3 +683,569 @@ In this video, you learned that:
 - **Normalization**: Involves breaking down dimension tables into hierarchical levels.
 
 Both schemas have their advantages and are chosen based on the specific needs of the data warehousing environment.
+
+
+
+# Comparison of Star Schema and Snowflake Schema
+
+When deciding between using a star schema and a snowflake schema for your data warehousing or database design, consider the following attributes and their impacts:
+
+| **Attribute**           | **Star Schema**                    | **Snowflake Schema**                  |
+|-------------------------|------------------------------------|---------------------------------------|
+| **Read Speed**          | Fast                               | Moderate                              |
+| **Write Speed**         | Moderate                           | Fast                                  |
+| **Storage Space**       | Moderate to high                   | Low to moderate                       |
+| **Data Integrity Risk** | Low to moderate                    | Low                                   |
+| **Query Complexity**    | Simple to moderate                 | Moderate to complex                   |
+| **Schema Complexity**   | Simple to moderate                 | Moderate to complex                   |
+| **Dimension Hierarchies** | Denormalized single tables       | Normalized over multiple tables       |
+| **Joins per Dimension Hierarchy** | One                    | One per level                         |
+| **Ideal Use**           | OLAP systems, Data Marts           | OLTP systems                          |
+
+### Detailed Comparison
+
+1. **Read Speed**:
+   - **Star Schema**: Offers fast read speeds due to fewer joins, making it ideal for Online Analytical Processing (OLAP) systems.
+   - **Snowflake Schema**: Read speeds are moderate as the normalization increases the number of joins required for queries.
+
+2. **Write Speed**:
+   - **Star Schema**: Write operations are moderate in speed due to the need to update fewer tables.
+   - **Snowflake Schema**: Faster write operations as updates are spread across multiple normalized tables, reducing data redundancy.
+
+3. **Storage Space**:
+   - **Star Schema**: Requires more storage due to denormalization, which can lead to data redundancy.
+   - **Snowflake Schema**: More storage-efficient due to normalization, which reduces data redundancy.
+
+4. **Data Integrity Risk**:
+   - **Star Schema**: Moderate risk, as denormalization can introduce inconsistencies if not managed properly.
+   - **Snowflake Schema**: Low risk, as normalization helps maintain data integrity through fewer redundancies.
+
+5. **Query Complexity**:
+   - **Star Schema**: Queries are simpler and easier to write, suitable for end-users and analysts.
+   - **Snowflake Schema**: Queries can become complex due to multiple joins across normalized tables.
+
+6. **Schema Complexity**:
+   - **Star Schema**: Simpler and easier to understand and implement, making it suitable for quick deployment.
+   - **Snowflake Schema**: More complex due to the normalized structure, requiring more detailed design and maintenance.
+
+7. **Dimension Hierarchies**:
+   - **Star Schema**: Uses denormalized single tables for each dimension, simplifying the schema.
+   - **Snowflake Schema**: Normalizes dimension hierarchies into multiple related tables, reducing redundancy.
+
+8. **Joins per Dimension Hierarchy**:
+   - **Star Schema**: Requires only one join per dimension, simplifying queries.
+   - **Snowflake Schema**: Requires one join per level of the dimension hierarchy, increasing query complexity.
+
+9. **Ideal Use**:
+   - **Star Schema**: Best suited for OLAP systems and data marts where quick query performance is crucial.
+   - **Snowflake Schema**: Ideal for Online Transaction Processing (OLTP) systems where data integrity and storage efficiency are prioritized.
+
+### Conclusion
+
+Choose the **star schema** if you need faster read performance and simpler queries, typically for OLAP and data marts. Opt for the **snowflake schema** if you prioritize data integrity, storage efficiency, and write performance, commonly used in OLTP systems.
+
+
+
+# Staging Areas for Data Warehouses
+
+Welcome to Staging Areas for Data Warehouses. After watching this video, you will be able to:
+
+- Describe what a data warehouse staging area is.
+- Describe why a staging area may be used.
+- Relate how a staging area is used as a first step for integrating data sources.
+![alt text](image-10.png)
+### What is a Data Warehouse Staging Area?
+
+A data warehouse staging area is an intermediate storage area used for Extract, Transform, Load (ETL) processing. It serves as a bridge between data sources and target data warehouses, data marts, or other data repositories. 
+
+- **Transient Nature**: Staging areas are often temporary and erased after successfully running ETL workflows.
+- **Archival and Troubleshooting**: Some architectures hold data for longer periods for archival or troubleshooting purposes.
+- **Monitoring and Optimization**: Useful for monitoring and optimizing ETL workflows.
+
+### Implementation of Staging Areas
+
+Staging areas can be implemented in various ways:
+
+1. **Simple Flat Files**: Such as CSV files stored in a directory, managed with tools like Bash or Python.
+2. **SQL Tables**: In a relational database such as Db2.
+3. **Self-contained Database Instances**: Within a data warehousing or business intelligence platform such as Cognos Analytics.
+
+### Example Use Case
+
+Consider an enterprise creating a dedicated "Cost Accounting" OLAP system. The required data is managed in separate OLTP systems for Payroll, Sales, and Purchasing departments. 
+
+1. **Extraction**: Data is extracted to individual Staging Tables in the Staging Database.
+2. **Transformation**: Data is transformed in the Staging Area using SQL to conform to the Cost Accounting system requirements.
+3. **Integration**: Transformed tables are integrated into a single table.
+4. **Loading**: Data is loaded into the target cost-accounting system.
+
+### Functions of a Staging Area
+
+Staging areas perform several critical functions, including:
+
+- **Integration**: Consolidation of data from multiple source systems.
+- **Change Detection**: Managing extraction of new and modified data as needed.
+- **Scheduling**: Running ETL tasks in a specific sequence, concurrently, and at certain times.
+- **Data Cleansing and Validation**: Handling missing values and duplicated records.
+- **Aggregating Data**: Summarizing data, e.g., aggregating daily sales into weekly, monthly, or annual averages.
+- **Normalizing Data**: Ensuring consistency of data types and category names.
+
+### Benefits of Using a Staging Area
+
+- **Decoupling from Source Systems**: Extraction decouples processes such as validation and cleansing from the source environment.
+- **Minimized Risk**: Helps minimize the risk of corrupting source-data systems.
+- **Simplified ETL Workflows**: Simplifies ETL workflow construction, operation, and maintenance.
+- **Recovery**: Allows easy recovery if extracted data becomes corrupted.
+
+### Conclusion
+
+In this video, you learned that:
+
+- A staging area acts as a bridge between data sources and target systems.
+- Staging areas are mainly used to integrate disparate data sources in data warehouses.
+- They can be implemented as flat files managed with scripts or as tables in a database.
+- Staging areas decouple data processing from source systems, minimizing the risk of data corruption.
+- They can be transient or held for archiving and troubleshooting purposes.
+
+By understanding and utilizing staging areas, you can improve the efficiency, integrity, and manageability of your ETL processes and overall data warehousing strategy.
+
+
+
+
+# Populating a Data Warehouse
+
+Welcome to “Populating a Data Warehouse.” After watching this video, you will be able to:
+
+- Describe populating a data warehouse as an ongoing process.
+- List the main steps for populating a data warehouse.
+- List methods for change detection and incremental loading.
+- Manually create and populate tables for a sales star schema.
+- Recall the periodic maintenance required to keep your data warehouse running smoothly.
+
+### Ongoing Process of Populating a Data Warehouse
+
+Populating an enterprise data warehouse is an ongoing process involving:
+1. **Initial Load**: Setting up and loading data for the first time.
+2. **Periodic Incremental Loads**: Regularly updating the warehouse with new data, which may occur daily or weekly. Rarely, a full refresh is needed due to major schema changes or failures.
+
+Generally, **fact tables** are dynamic and frequently updated, while **dimension tables** remain relatively static. 
+
+### Tools for Automating Data Loading
+
+Many tools can automate the ongoing process of keeping your data warehouse current:
+- **Db2 Load Utility**: Faster than row-by-row insertion.
+- **Apache Airflow and Apache Kafka**: Automate ETL data pipelines.
+- **Custom Scripts**: Using Bash, Python, and SQL.
+- **InfoSphere DataStage**: Compile and run jobs to load your data.
+
+### Preparing for Data Warehouse Population
+
+Before populating your data warehouse:
+1. **Schema Modeling**: Ensure your schema is modeled.
+2. **Data Staging**: Data should be staged in tables or files.
+3. **Data Quality Verification**: Mechanisms to verify data quality should be in place.
+
+### Initial Load Process
+
+1. **Instantiate the Data Warehouse**: Set up the data warehouse and its schema.
+2. **Create Production Tables**: Create the necessary tables.
+3. **Establish Relationships**: Define relationships between fact and dimension tables.
+4. **Load Data**: Load transformed and cleaned data into the warehouse from staging tables or files.
+
+### Setting Up Ongoing Data Loads
+
+After the initial load:
+1. **Automate Incremental Loads**: Use scripts as part of your ETL data pipeline.
+2. **Schedule Loads**: Schedule incremental loads daily or weekly.
+3. **Change Detection**: Implement logic to detect new or updated data.
+
+#### Methods for Change Detection
+- **Timestamps**: Use timestamps to identify new, modified, or deleted records.
+- **Database Mechanisms**: Use relational database mechanisms to track changes.
+- **Brute-Force Comparison**: Load the entire source for comparison if the source data isn't too large.
+
+### Periodic Maintenance
+
+- **Archiving**: Archive old data to less costly storage.
+- **Deletion**: Script the deletion of older data.
+- **Frequency**: Perform maintenance monthly or yearly.
+
+### Example: Populating a Sales Star Schema
+
+Assuming you’ve already instantiated the data warehouse and the 'sales' schema:
+
+1. **Auto Sales Transaction Data**: Contains columns like "sales ID," "emp no," "class ID," "date," and "amount."
+
+2. **Creating Dimension Tables**:
+   - Use `CREATE TABLE` to create the `DimSalesPerson` table:
+     ```sql
+     CREATE TABLE sales.DimSalesPerson (
+         SalesPersonID SERIAL PRIMARY KEY,
+         SalesPersonAltID INTEGER,
+         SalesPersonName VARCHAR(255)
+     );
+     ```
+
+3. **Populating Dimension Tables**:
+   - Use `INSERT INTO` to populate the table:
+     ```sql
+     INSERT INTO sales.DimSalesPerson (SalesPersonAltID, SalesPersonName)
+     VALUES (680, 'Cadillac Jack');
+     ```
+
+4. **Creating Fact Table**:
+   - Use `CREATE TABLE` to create the `FactAutoSales` table:
+     ```sql
+     CREATE TABLE sales.FactAutoSales (
+         TransactionID BIGSERIAL PRIMARY KEY,
+         SalesID INTEGER,
+         Amount MONEY,
+         SalesPersonID INTEGER,
+         AutoClassID INTEGER,
+         SalesDateKey DATE
+     );
+     ```
+
+5. **Establishing Relationships**:
+   - Use `ALTER TABLE` to set up foreign key constraints:
+     ```sql
+     ALTER TABLE sales.FactAutoSales
+     ADD CONSTRAINT FKAutoClassID
+     FOREIGN KEY (AutoClassID) REFERENCES sales.DimAutoCategory(AutoClassID);
+     ```
+
+6. **Populating Fact Table**:
+   - Use `INSERT INTO` to populate the table:
+     ```sql
+     INSERT INTO sales.FactAutoSales (SalesID, Amount, SalesPersonID, AutoClassID, SalesDateKey)
+     VALUES (1629, 42000, 2, 1, '2023-01-01');
+     ```
+
+### Conclusion
+
+In this video, you learned that:
+
+- Populating an enterprise data warehouse includes initial creation of fact and dimension tables and their relations and loading clean data into tables.
+- It is an ongoing process starting with an initial load followed by periodic incremental loads.
+- Fact tables require frequent updating while dimension tables remain relatively static.
+- Incremental loading and maintenance can be automated using scripts or data pipeline tools.
+
+
+
+# Querying the Data
+
+Welcome to "Querying the Data." After watching this video, you will be able to:
+
+- Interpret an entity-relationship diagram (ERD) for a star schema and use the relations between tables to set up queries.
+- Create a materialized view by denormalizing, or joining tables from, a star schema.
+- Apply the CUBE and ROLLUP options in a GROUP BY clause to generate commonly requested total and subtotal summaries.
+
+### Overview of CUBE and ROLLUP Operations
+
+CUBE and ROLLUP operations generate summaries that management often requests, making it easier to implement than multiple SQL queries. 
+
+- **CUBE**: Generates all possible combinations of columns for summaries.
+- **ROLLUP**: Generates a hierarchy of subtotals and grand totals based on the column order in the GROUP BY clause.
+
+Materialized views store precomputed data, enhancing performance by reducing the load on the database. Combining cubes or rollups with materialized views can further improve efficiency.
+
+### Scenario: Creating Live Summary Tables for Reporting
+
+Let's consider the task of creating live summary tables for reporting January sales by salesperson and automobile type for ShinyAutoSales.
+
+1. **Understanding the Star Schema**:
+   - Connect to the "sasDW" data warehouse using PostgreSQL.
+   - The central fact table is "fact_auto_sales," which contains the "amount" column.
+   - The three foreign keys in "fact_auto_sales" link to:
+     - "Date dimension table" with date-related values.
+     - "Auto category dimension table" with "auto class name" and "is new" column.
+     - "Salesperson dimension table" with "salesperson's name."
+
+2. **Exploring the Schema**:
+   - Query the "fact_auto_sales" table:
+     ```sql
+     SELECT * FROM sales.fact_auto_sales LIMIT 10;
+     ```
+   - Query the "auto category dimension table":
+     ```sql
+     SELECT * FROM sales.dim_auto_category;
+     ```
+   - Query the "salesperson dimension table":
+     ```sql
+     SELECT * FROM sales.dim_salesperson;
+     ```
+   - Query the "date dimension table":
+     ```sql
+     SELECT * FROM sales.dim_date;
+     ```
+
+3. **Creating a Denormalized View**:
+   - Select relevant columns and join the dimension tables to the fact table:
+     ```sql
+     SELECT 
+         d.date,
+         c.auto_class_name,
+         c.is_new,
+         s.salesperson_name,
+         f.amount
+     FROM 
+         sales.fact_auto_sales f
+     INNER JOIN 
+         sales.dim_date d ON f.sales_date_key = d.date_key
+     INNER JOIN 
+         sales.dim_auto_category c ON f.auto_class_id = c.auto_class_id
+     INNER JOIN 
+         sales.dim_salesperson s ON f.salesperson_id = s.salesperson_id;
+     ```
+   - Create a materialized view:
+     ```sql
+     CREATE MATERIALIZED VIEW dn_sales AS
+     SELECT 
+         d.date,
+         c.auto_class_name,
+         c.is_new,
+         s.salesperson_name,
+         f.amount
+     FROM 
+         sales.fact_auto_sales f
+     INNER JOIN 
+         sales.dim_date d ON f.sales_date_key = d.date_key
+     INNER JOIN 
+         sales.dim_auto_category c ON f.auto_class_id = c.auto_class_id
+     INNER JOIN 
+         sales.dim_salesperson s ON f.salesperson_id = s.salesperson_id;
+     ```
+   - View the materialized data:
+     ```sql
+     SELECT * FROM dn_sales LIMIT 10;
+     ```
+
+4. **Applying CUBE and ROLLUP Operations**:
+   - **CUBE Operation**:
+     ```sql
+     SELECT 
+         auto_class_name, 
+         salesperson_name, 
+         SUM(amount) AS total_sales
+     FROM 
+         dn_sales
+     WHERE 
+         is_new = TRUE
+     GROUP BY 
+         CUBE(auto_class_name, salesperson_name);
+     ```
+     - This generates all combinations of auto class name and salesperson name.
+   - **ROLLUP Operation**:
+     ```sql
+     SELECT 
+         auto_class_name, 
+         salesperson_name, 
+         SUM(amount) AS total_sales
+     FROM 
+         dn_sales
+     WHERE 
+         is_new = TRUE
+     GROUP BY 
+         ROLLUP(auto_class_name, salesperson_name);
+     ```
+     - This generates a hierarchy of subtotals and a grand total based on the order of columns.
+
+### Conclusion
+
+In this video, you learned that:
+
+- CUBE and ROLLUP summaries on materialized views provide powerful capabilities for quickly querying and analyzing data in data warehouses.
+- CUBE and ROLLUP operations generate summaries grouped by dimensions that management often requests.
+- You can denormalize star schemas using joins to bring together human-interpretable facts and dimensions in a single materialized view.
+- You can create staging tables from materialized views, which can be incrementally refreshed during off-peak hours.
+
+```sql
+
+select year,category, sum(billedamount) as totalbilledamount
+from "FactBilling"
+left join "DimCustomer"
+on "FactBilling".customerid = "DimCustomer".customerid
+left join "DimMonth"
+on "FactBilling".monthid="DimMonth".monthid
+group by grouping sets(year,category);
+
+
+select year,category, sum(billedamount) as totalbilledamount
+from "FactBilling"
+left join "DimCustomer"
+on "FactBilling".customerid = "DimCustomer".customerid
+left join "DimMonth"
+on "FactBilling".monthid="DimMonth".monthid
+group by rollup(year,category)
+order by year, category;
+
+
+select year,category, sum(billedamount) as totalbilledamount
+from "FactBilling"
+left join "DimCustomer"
+on "FactBilling".customerid = "DimCustomer".customerid
+left join "DimMonth"
+on "FactBilling".monthid="DimMonth".monthid
+group by cube(year,category)
+order by year, category;
+
+
+CREATE MATERIALIZED VIEW countrystats (country, year, totalbilledamount) AS
+(select country, year, sum(billedamount)
+from "FactBilling"
+left join "DimCustomer"
+on "FactBilling".customerid = "DimCustomer".customerid
+left join "DimMonth"
+on "FactBilling".monthid="DimMonth".monthid
+group by country,year);
+
+
+select year, quartername, sum(billedamount) as totalbilledamount
+from "FactBilling"
+left join "DimCustomer"
+on "FactBilling".customerid = "DimCustomer".customerid
+left join "DimMonth"
+on "FactBilling".monthid="DimMonth".monthid
+group by grouping sets(year, quartername);
+
+REFRESH MATERIALIZED VIEW countrystats;
+
+select * from countrystats;
+
+-- Create a grouping set for the columns year, quartername, sum(billedamount).
+
+select year, quartername, sum(billedamount) as totalbilledamount
+from "FactBilling"
+left join "DimCustomer"
+on "FactBilling".customerid = "DimCustomer".customerid
+left join "DimMonth"
+on "FactBilling".monthid="DimMonth".monthid
+group by grouping sets(year, quartername);
+
+-- Create a rollup for the columns country, category, sum(billedamount).
+
+select year, quartername,  sum(billedamount) as totalbilledamount
+from "FactBilling"
+left join "DimCustomer"
+on "FactBilling".customerid = "DimCustomer".customerid
+left join "DimMonth"
+on "FactBilling".monthid="DimMonth".monthid
+group by rollup(year, quartername)
+order by year, quartername;
+
+ Create a cube for the columns year,country, category, sum(billedamount).
+
+ select year, quartername, sum(billedamount) as totalbilledamount
+from "FactBilling"
+left join "DimCustomer"
+on "FactBilling".customerid = "DimCustomer".customerid
+left join "DimMonth"
+on "FactBilling".monthid="DimMonth".monthid
+group by cube(year,quartername);
+
+-- Create an MQT named average_billamount with columns year, quarter, category, country, average_bill_amount.
+
+CREATE MATERIALIZED VIEW average_billamount (year,quarter,category,country, average_bill_amount) AS
+    (select   year,quarter,category,country, avg(billedamount) as average_bill_amount
+    from "FactBilling"
+    left join  "DimCustomer"
+    on "FactBilling".customerid =  "DimCustomer".customerid
+    left join "DimMonth"
+    on "FactBilling".monthid="DimMonth".monthid
+    group by year,quarter,category,country
+    );
+
+refresh MATERIALIZED VIEW average_billamount;
+
+-- Write a query using grouping sets
+
+select year,category, sum(billedamount) as totalbilledamount
+from factbilling
+left join dimcustomer
+on factbilling.customerid = dimcustomer.customerid
+left join dimmonth
+on factbilling.monthid=dimmonth.monthid
+group by rollup(year,category)
+order by year, category
+
+select year,category, sum(billedamount) as totalbilledamount
+from factbilling
+left join dimcustomer
+on factbilling.customerid = dimcustomer.customerid
+left join dimmonth
+on factbilling.monthid=dimmonth.monthid
+group by cube(year,category)
+order by year, category
+
+
+CREATE TABLE countrystats (country, year, totalbilledamount) AS
+  (select country, year, sum(billedamount)
+from factbilling
+left join dimcustomer
+on factbilling.customerid = dimcustomer.customerid
+left join dimmonth
+on factbilling.monthid=dimmonth.monthid
+group by country,year)
+     DATA INITIALLY DEFERRED
+     REFRESH DEFERRED
+     MAINTAINED BY SYSTEM;
+
+
+select country, year, sum(billedamount)
+from factbilling
+left join dimcustomer
+on factbilling.customerid = dimcustomer.customerid
+left join dimmonth
+on factbilling.monthid=dimmonth.monthid
+group by country,year
+
+
+-- Create a grouping set for the columns year, quartername, sum(billedamount).
+
+select year, quartername, sum(billedamount) as totalbilledamount
+from factbilling
+left join dimcustomer
+on factbilling.customerid = dimcustomer.customerid
+left join dimmonth
+on factbilling.monthid=dimmonth.monthid
+group by grouping sets(year, quartername)
+
+-- Create a rollup for the columns country, category, sum(billedamount).
+
+select country, category, sum(billedamount) as totalbilledamount
+from factbilling
+left join dimcustomer
+on factbilling.customerid = dimcustomer.customerid
+left join dimmonth
+on factbilling.monthid=dimmonth.monthid
+group by rollup(country,category)
+
+-- Create a cube for the columns year,country, category, sum(billedamount).
+
+
+select year,country, category, sum(billedamount) as totalbilledamount
+from factbilling
+left join dimcustomer
+on factbilling.customerid = dimcustomer.customerid
+left join dimmonth
+on factbilling.monthid=dimmonth.monthid
+group by cube(year,country, category)
+
+-- Create an MQT named average_billamount with columns year, quarter, category, country, average_bill_amount.
+
+CREATE TABLE average_billamount (year,quarter,category,country, average_bill_amount) AS
+    (select   year,quarter,category,country, avg(billedamount) as average_bill_amount
+    from factbilling
+    left join dimcustomer
+    on factbilling.customerid = dimcustomer.customerid
+    left join dimmonth
+    on factbilling.monthid=dimmonth.monthid
+    group by year,quarter,category,country
+    )
+     DATA INITIALLY DEFERRED
+     REFRESH DEFERRED
+     MAINTAINED BY SYSTEM;
+
+
+```
+
