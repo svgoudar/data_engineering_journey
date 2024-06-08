@@ -1249,3 +1249,68 @@ CREATE TABLE average_billamount (year,quarter,category,country, average_bill_amo
 
 ```
 
+# Introduction to Analytics and Business Intelligence Tools
+
+Welcome to “Introduction to Analytics and Business Intelligence Tools.” After watching this video, you will be able to:
+
+- Define analytics.
+- Describe how business intelligence tools have changed analytics processing and results.
+- Outline the purpose of Analytics and Business Intelligence tools.
+- Define what an Analytics or Business Intelligence tool is.
+- Identify several Analytics and Business Intelligence tools.
+
+### What is Analytics?
+
+Analytics is the systematic compilation and dissection of data, statistics, and operations research to build models that facilitate better decision-making. 
+
+### Evolution and Impact of Technology on Analytics
+
+With significant advancements in compute storage, processors, and memory, the speed, capacity, and affordability of analytics have vastly improved. Modern data warehousing solutions can now store large volumes of data with low latency, allowing organizations to process vast amounts of data quickly. This increase in data availability enhances the accuracy of analytics.
+
+### Types of Analytics
+
+- **Descriptive Analytics**: Provides insight into past events.
+- **Predictive Analytics**: Provides insight into potential future events.
+- **Prescriptive Analytics**: Provides recommendations on actions to achieve desired future outcomes.
+
+### Role of Business Intelligence (BI) Tools
+
+BI tools enable data preparation, data mining, data management, and data visualization, much like solving a puzzle to gain a comprehensive picture of an organization. They help businesses focus on understanding what is happening and why it is happening by applying statistics and operations research to create inherent intelligence. 
+
+### Analytics Enabled by BI Tools
+
+BI tools help organizations harness various types of analytics for both operational and strategic decisions:
+- **Descriptive Analytics**: Insights into past performance.
+- **Diagnostic Analytics**: Identifying causes of past outcomes.
+- **Predictive Analytics**: Forecasting future trends.
+- **Prescriptive Analytics**: Recommending actions to achieve specific results.
+
+### Features of BI Tools
+
+- **Dashboarding**: Interactive dashboards to visualize data and metrics.
+- **Reporting**: Generating reports to summarize data insights.
+- **Self-serve Analytics**: Empowering users to analyze data independently.
+
+### Prominent Business Intelligence Tools
+
+- **IBM Cognos Analytics**: Integrates Watson Analytics leveraging AI and natural language processing.
+- **Microsoft Power BI**: Known for its secure insights and user-friendly interface.
+- **Tableau**: Renowned for its powerful visualizations.
+- **Oracle Analytics Cloud**: Offers conversational analytics for user-friendly data interaction.
+- **SAP Business Objects**: Known for its intelligent analytics capabilities.
+- **Tibco Spotfire**: Scalable for both small and large organizations.
+
+### IBM Cognos Analytics
+
+IBM has invested over $25 billion since 2005 to enhance its analytics capabilities. Cognos Analytics is IBM’s AI-powered business intelligence and analytics software, supporting the entire data analytics lifecycle from discovery to operations.
+
+### Summary
+
+In this video, you learned that:
+
+- **Analytics**: Building models with data to make better decisions.
+- **Business Intelligence**: Technology enabling data preparation, mining, management, and visualization.
+- **BI Tools**: Software applications that support analytics through various functionalities.
+- **IBM Cognos Analytics**: One of the top BI solutions available, leveraging AI for enhanced analytics capabilities.
+
+
