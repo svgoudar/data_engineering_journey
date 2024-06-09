@@ -337,3 +337,571 @@ CRUD operations consist of:
 - **Delete**: `deleteOne`, `deleteMany`
 
 Different kinds of acknowledgments are returned based on the operation being run.
+
+
+
+# Indexes
+
+Welcome to **Indexes**. After watching this video, you will be able to:
+- Explain why we need indexes
+- Use indexes to perform efficient searches and sorts
+- Describe how MongoDB stores indexes
+
+## Importance of Indexes
+
+Indexes help quickly locate data without scanning the entire collection. For example, finding a specific book in the British Library without an index would require searching through 25 million books. With an index, you can go directly to the appropriate section and find the book quickly.
+
+### Everyday Examples of Indexes
+
+- **Telephone Books**: Names are indexed by surname and first name.
+- **Dictionaries**: Words are indexed alphabetically.
+- **Books**: Indexes at the end of books help locate specific topics.
+
+## Creating Indexes in Databases
+
+Indexes should be created for the most frequent queries. In the Campus Management Database, for the `course enrollment` collection, we find students using `courseId`. Creating an index on the `courseId` field allows efficient searches:
+
+```javascript
+db.course_enrollment.createIndex({ courseId: 1 })
+```
+
+This command creates an ascending index on the `courseId` field. If you need to sort by `studentId` as well, you can create a compound index:
+
+```javascript
+db.course_enrollment.createIndex({ courseId: 1, studentId: 1 })
+```
+
+In this compound index, documents with the same `courseId` are sorted by `studentId`.
+
+## How MongoDB Stores Indexes
+
+Indexes in MongoDB are special data structures that store:
+- The indexed fields
+- The location of documents on disk
+
+MongoDB stores indexes in a balanced tree form. For example, with a compound index on `courseId` and `studentId`, the tree structure allows efficient equality and range searches. Additionally, if a field is already indexed, MongoDB can skip sorting it again.
+
+### Tree Structure
+
+- **Balanced Tree**: Ensures efficient search operations.
+- **Organized Order**: Indexed fields are in ascending or descending order, providing quick access to documents.
+
+## Summary
+
+In this video, you learned that:
+- Indexes help quickly locate data without scanning the entire collection.
+- Indexes should be created for the most frequent queries.
+- A compound index indexes more than one field.
+- MongoDB stores indexed data and document locations.
+- MongoDB uses a balanced tree structure for indexes, enhancing search efficiency.
+
+# Aggregation Framework
+
+Welcome to **Aggregation Framework**. After watching this video, you will be able to:
+
+- Explain what an aggregation framework is in MongoDB
+- Describe how an aggregation framework is built
+- List some of the most commonly used stages
+- Describe when you can use aggregation
+
+## What is an Aggregation Framework?
+
+An aggregation framework, also known as an aggregation pipeline, is a series of operations applied to data to obtain a specific outcome. For example, to understand whether students are developing their knowledge, you might want to see the average student scores in 2020 organized by `courseId`. To get this information, you would:
+1. Filter the 2020 documents
+2. Group those documents by course
+3. Calculate the average score
+
+### Sample Data
+
+Consider the following sample data for `courseResults`:
+- Each document contains `courseId`, `courseYear`, and `score`.
+
+### Aggregation Stages
+
+1. **$match**: Filters documents from the year 2020.
+2. **$group**: Groups documents by `courseId` and calculates the average score, stored in `averageScore`.
+
+Processing this code is like running a pipeline where documents enter from one side, go through one or more processes, and come out in the desired format.
+
+### Sample Data Flow
+
+- **$match Stage**: Filters documents that do not have the year 2020.
+- **$group Stage**: Groups documents by `courseId` and calculates the average score.
+
+### Common Aggregation Stages
+
+- **$project**: Reshapes documents by including or excluding fields.
+- **$sort**: Sorts the documents in the requested order by field.
+- **$count**: Counts documents in that stage.
+- **$merge**: Moves output to a collection.
+
+## Examples
+
+### $project Stage
+
+Using the `students` data, apply the `$project` stage to only include `firstName` and `lastName`:
+
+```javascript
+db.students.aggregate([
+  { $project: { firstName: 1, lastName: 1 } }
+])
+```
+
+This will only display `firstName`, `lastName`, and `_id` (unless explicitly excluded).
+
+### $sort Stage
+
+Sort by `lastName` in descending order:
+
+```javascript
+db.students.aggregate([
+  { $sort: { lastName: -1 } }
+])
+```
+
+### $count Stage
+
+Calculate the total number of students:
+
+```javascript
+db.students.aggregate([
+  { $count: "totalStudents" }
+])
+```
+
+This produces the output `totalStudents: 3`.
+
+### $merge Stage
+
+Store the output into a collection called `averageScores`:
+
+```javascript
+db.courseResults.aggregate([
+  { $match: { courseYear: 2020 } },
+  { $group: { _id: "$courseId", averageScore: { $avg: "$score" } } },
+  { $merge: "averageScores" }
+])
+```
+
+## When to Use Aggregation Framework
+
+- Track student progress by course
+- Calculate the average sale of a product per country in an ecommerce application
+- Create simplified or complex calculations
+- Provide multiple perspectives about the data
+
+## Summary
+
+In this video, you learned:
+- The purpose and function of an aggregation framework in MongoDB
+- How to build an aggregation process using stages like `$match`, `$group`, `$project`, and `$sort`
+- How to use `$merge` to store outcomes in another collection
+- Use cases for the aggregation framework, such as reporting and analysis tasks
+
+
+
+# Replication and Sharding
+
+Welcome to **Replication and Sharding**. The scale and availability we see with MongoDB is achieved using these two concepts. After watching this video, you will be able to:
+- Define replication
+- Explain the benefits of replication
+- Describe what sharding is and its benefits
+- Explain how sharding helps scale a database
+
+## Replication
+
+A typical MongoDB cluster is made of three data-bearing nodes, known as a Replica Set. Each node has the same data, ensuring redundancy and high availability.
+
+### Key Concepts
+
+- **Primary Node**: The main node where data is written.
+- **Secondary Nodes**: Nodes that replicate data from the primary node.
+
+### Benefits of Replication
+
+1. **Redundancy**: Multiple copies of data ensure that if one node fails, others can take over.
+2. **High Availability**: Provides continuous availability during hardware failures or maintenance.
+
+### Misconception
+
+- Replication **does not** protect against accidental deletions or data corruption. For disaster recovery, rely on backups and restoration processes.
+
+### Replication Process
+
+1. **Write Operation**: Changes are written to the primary node.
+2. **Oplog**: The primary node records changes in its operations log (Oplog).
+3. **Replication**: Secondary nodes observe the primary Oplog, copy changes, and apply them.
+
+### Example
+
+Deleting students from a database:
+```javascript
+db.students.deleteMany({/* criteria */});
+```
+This operation appears as a single entry in the Oplog.
+
+## Sharding
+
+When data grows beyond hardware capacity, you can scale horizontally using sharding, which partitions large collections across multiple nodes.
+
+### Benefits of Sharding
+
+1. **Increased Throughput**: Queries are directed only to relevant shards.
+2. **Greater Storage**: Allows storage of more data than a single node can handle.
+3. **Regional Data Distribution**: Data can be partitioned based on regions (e.g., US and Europe).
+
+### Sharding Example
+
+- **US Data**: Stored on US shards.
+- **European Data**: Stored on European shards.
+
+## High Availability and Elections
+
+- **Primary Node**: Accepts write operations.
+- **Election**: If the primary node fails, MongoDB can automatically elect a secondary node as the new primary.
+
+### Election Triggers
+
+1. Primary node becomes unavailable.
+2. New replica set initialization.
+3. Manual failover initiated by an administrator.
+
+### Voting System
+
+- Ensures only one member becomes the primary.
+- Eligible members with the most recent data and minimal replication lag are considered.
+- The node with the most votes becomes the primary.
+
+## Summary
+
+In this video, you learned that:
+- Replication is the duplication of data and changes, providing fault tolerance, redundancy, and high availability.
+- Replication does not protect against human errors like deletions; backups are necessary for disaster recovery.
+- Sharding allows horizontal scaling for growing datasets by partitioning data across multiple nodes.
+
+
+
+# Accessing MongoDB from Python
+
+Welcome to **Accessing MongoDB from Python**. After watching this video, you will be able to:
+- Explain what the `MongoClient` is
+- Perform basic CRUD operations for our Campus Management database using Python
+
+## Introduction to MongoClient
+
+The `MongoClient` is a class that helps you interact with MongoDB. Let's explore how to use it.
+
+### Steps to Use MongoClient
+
+1. **Import MongoClient** from `pymongo`, the official MongoDB driver for Python.
+2. **Create a connection** to MongoDB using a URI.
+3. **Get a reference** to the Campus Management database.
+4. **Point to the `students` collection** within the database.
+
+### Example Code
+
+```python
+from pymongo import MongoClient
+
+# Step 1: Define the URI for MongoDB connection
+uri = "your_mongo_db_uri"
+
+# Step 2: Create the MongoClient
+client = MongoClient(uri)
+
+# Step 3: Get the Campus Management database
+db = client['campus_management']
+
+# Step 4: Get the students collection
+students_collection = db['students']
+```
+
+## Create Operations
+
+### Insert a Single Document
+
+To create a student document, call the `insert_one` function:
+
+```python
+student = {
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john.doe@example.com"
+}
+result = students_collection.insert_one(student)
+print(f"Inserted student with id: {result.inserted_id}")
+```
+
+### Insert Multiple Documents
+
+To perform a bulk insert, use the `insert_many` function:
+
+```python
+students = [
+    {"firstName": "Jane", "lastName": "Doe", "email": "jane.doe@example.com"},
+    {"firstName": "Jim", "lastName": "Beam", "email": "jim.beam@example.com"}
+]
+result = students_collection.insert_many(students)
+print(f"Inserted student ids: {result.inserted_ids}")
+```
+
+## Read Operations
+
+### Find One Document
+
+Retrieve the first document:
+
+```python
+student = students_collection.find_one()
+print(student)
+```
+
+### Find a Document with Criteria
+
+Retrieve the first student with a specific email:
+
+```python
+student = students_collection.find_one({"email": "john.doe@example.com"})
+print(student)
+```
+
+### Find All Documents with Criteria
+
+Retrieve all students with the last name "Doe":
+
+```python
+students = students_collection.find({"lastName": "Doe"})
+for student in students:
+    print(student)
+```
+
+### Count Documents
+
+Count the number of students with the last name "Doe":
+
+```python
+count = students_collection.count_documents({"lastName": "Doe"})
+print(f"Number of students with last name Doe: {count}")
+```
+
+## Update Operations
+
+### Replace a Document
+
+Retrieve a student and make some changes:
+
+```python
+student = students_collection.find_one({"lastName": "Doe"})
+if student:
+    student['email'] = "john.doe@campus.edu"
+    student['status'] = "online"
+    students_collection.replace_one({"lastName": "Doe"}, student)
+```
+
+### In-place Update
+
+Perform small changes without retrieving the document:
+
+```python
+students_collection.update_one(
+    {"lastName": "Doe"},
+    {"$set": {"email": "john.doe@campus.edu", "status": "online"}}
+)
+```
+
+### Update Multiple Documents
+
+Update all students to online status due to lockdown:
+
+```python
+students_collection.update_many({}, {"$set": {"status": "online"}})
+```
+
+## Delete Operations
+
+### Delete One Document
+
+Delete a single document:
+
+```python
+students_collection.delete_one({"lastName": "Doe"})
+```
+
+### Delete Multiple Documents
+
+Delete multiple documents:
+
+```python
+students_collection.delete_many({"lastName": "Doe"})
+```
+
+## Summary
+
+In this video, you learned that:
+- `MongoClient` is a class that helps you interact with MongoDB.
+- `MongoClient` is imported from `pymongo`, the official MongoDB driver for Python.
+- You can perform single or bulk inserts, replace whole documents, perform in-place updates, and delete one or more documents from your collection.
+
+
+
+| Term                 | Definition                                                                                                                                                                                                                                    |
+|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Aggregation pipeline | The aggregation pipeline in MongoDB allows for data transformation and processing using a series of stages, including filtering, grouping, sorting, and projecting. The aggregation pipeline is a powerful tool for expressive data manipulation. |
+| B+ Tree              | The B+ Tree is a data structure commonly used in database indexing to efficiently store and retrieve data based on ordered keys.                                                                                                                |
+| CRUD                 | CRUD is an acronym for create, read, update, and delete, which are the basic operations for the basic operations for interacting with and manipulating data in a database.                                                                     |
+| Election             | In a MongoDB replica set, an election is the process of selecting a new primary node when the current primary becomes unavailable.                                                                                                             |
+| Horizontal scaling   | The process of adding more machines or nodes to a NoSQL database to improve its performance and capacity. This is typically achieved through techniques like sharding.                                                                         |
+| Idempotent changes   | Idempotent operations are those that can be safely repeated multiple times without changing the result. MongoDB encourages idempotent operations to ensure data consistency.                                                                  |
+| Indexing             | The creation of data structures that improve query performance by allowing the database to quickly locate specific records based on certain fields or columns.                                                                                 |
+| Mongo shell          | The MongoDB shell, known as mongo shell, is an interactive command-line interface that allows users to interact with a MongoDB server using JavaScript-like commands. The mongo shell is a versatile tool for administration and data manipulation.  |
+| MongoClient          | MongoClient is the official MongoDB driver that provides a connection to a MongoDB server and allows developers to interact with the database in various programming languages.                                                               |
+| Oplog                | The Oplog is a special collection that records all write operations in a primary node. It is used to replicate data to secondary nodes and recover from failures.                                                                              |
+| Primary node         | In a MongoDB replica set, the primary node is the active, writable node that processes all write operations.                                                                                                                                  |
+| Replication          | Replication involves creating and maintaining copies of data on multiple nodes to ensure data availability, reduce data loss, fault tolerance (improve system resilience), and provide read scalability.                                     |
+| Replication lag      | Replication lag refers to the delay in data replication from a primary node to its secondary nodes in a replica set. Replication lag can impact the consistency of secondary data.                                                            |
+| Secondary            | Secondary nodes replicate data from the primary and can be used for read-operations.                                                                                                                                                         |
+| Sharding             | Refers to the practice of partitioning a database into smaller, more manageable pieces called shards to distribute data across multiple servers. Sharding helps with horizontal scaling.                                                      |
+| Vertical scaling     | Vertical scaling involves upgrading the resources (For example, CPU and RAM) of existing machines to improve performance.                                                                                                                     |
+
+
+
+Here's a markdown version of the MongoDB cheat sheet:
+
+
+# MongoDB Cheat Sheet
+
+## Basic commands
+
+### Connect to MongoDB: Different ways to connect using Mongoshell
+```shell
+mongosh "URI"
+mongosh --host mongodb0.example.com --port 28015
+mongosh "mongodb://mongodb0.example.com:28015" --username alice --authenticationDatabase admin
+```
+
+### Show databases
+```shell
+show dbs
+```
+
+### Switch database
+```shell
+use <database_name>
+```
+
+### Create a collection
+```shell
+db.createCollection("<collection_name>")
+```
+
+### Show collections in the current database
+```shell
+show collections
+```
+
+### Insert a document
+```shell
+db.<collection_name>.insert({ field1: value1, field2: value2, ... })
+```
+
+### Insert multiple documents
+```shell
+db.<collection_name>.insertMany([document1, document2, ...])
+```
+
+### Find documents
+```shell
+db.<collection_name>.find()
+```
+
+## Querying
+
+### Filter documents with a query
+```shell
+db.<collection_name>.find({ field: value })
+```
+
+### Equality query
+```shell
+db.<collection_name>.find({ field: "value" })
+```
+
+### Range query
+```shell
+db.<collection_name>.find({ field: { $lt: value } })
+db.<collection_name>.find({ field: { $gt: value } })
+db.<collection_name>.find({ field: { $lt: value, $gt: value } })
+```
+
+### AND query
+```shell
+db.<collection_name>.find({ field1: value1, field2: value2 })
+```
+
+### OR query
+```shell
+db.<collection_name>.find({ $or: [ { field1: value1 }, { field2: value2 } ] })
+```
+
+### Sort ascending
+```shell
+db.<collection_name>.find().sort({ field: 1 })
+```
+
+### Sort descending
+```shell
+db.<collection_name>.find().sort({ field: -1 })
+```
+
+## Update and delete
+
+### Update documents
+```shell
+db.<collection_name>.updateOne({ field: value }, { $set: { new_field: new_value } })
+db.<collection_name>.updateMany({ field: value }, { $set: { new_field: new_value } })
+```
+
+### Delete documents
+```shell
+db.<collection_name>.deleteOne({ field: value })
+db.<collection_name>.deleteMany({ field: value })
+```
+
+## Aggregation
+
+### Aggregation pipeline
+```shell
+db.<collection_name>.aggregate([
+    { $match: { field: value } },
+    { $group: { _id: "$field", total: { $sum: 1 } } }
+])
+```
+
+## Indexing
+
+### Create a single field index
+```shell
+db.<collection_name>.createIndex({ field: 1 })
+```
+
+### Create a compound index
+```shell
+db.<collection_name>.createIndex({ field: 1, another_field: 1 })
+```
+
+### List all indexes
+```shell
+db.<collection_name>.getIndexes()
+```
+
+## Export and import data
+
+### Export data to JSON
+```shell
+mongoexport --db <database_name> --collection <collection_name> --out <output_file.json>
+```
+
+### Import data from JSON
+```shell
+mongoimport --db <database_name> --collection <collection_name> --file <input_file.json>
+```
