@@ -255,7 +255,6 @@ In this video, you have learned that:
 ![alt text](image-19.png)
 ![alt text](image-20.png)
 
-
 # Glossary of Key Database Concepts
 
 ## ACID
