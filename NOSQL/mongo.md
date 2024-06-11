@@ -975,3 +975,44 @@ mongoexport -u
 ```
 
 ![alt text](image-22.png)
+
+- ### Cassandra Hands on
+
+```sh
+curl -O https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMSkillsNetwork-DB0151EN-edX/labs/FinalProject/partial_data.csv
+
+
+create keyspace entertainment with replication={'class':'SimpleStrategy','replication_factor':3};
+
+cassandra@cqlsh> use entertainment ;
+cassandra@cqlsh:entertainment> create table movies(id
+ text PRIMARY KEY,title text,year text,rating text,di
+rector text);
+
+```
+
+![alt text](image-23.png)
+
+![alt text](image-24.png)
+
+![alt text](image-25.png)
+
+```sh
+
+cassandra@cqlsh:entertainment> copy movies(id,title,year,rating,director) from '/home/project/partial_data.csv' with delimiter=',' and header=TRUE;
+
+
+select count(*) from movies;
+
+cassandra@cqlsh:entertainment> create index movies_index on movies(rating);
+
+
+select count(*) from movies where rating='G';
+
+```
+
+![alt text](image-26.png)
+
+![alt text](image-27.png)
+
+![alt text](image-28.png)
