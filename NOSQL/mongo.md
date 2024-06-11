@@ -905,3 +905,73 @@ mongoexport --db <database_name> --collection <collection_name> --out <output_fi
 ```shell
 mongoimport --db <database_name> --collection <collection_name> --file <input_file.json>
 ```
+
+
+## Handson
+
+```shell
+
+curl -O https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMSkillsNetwork-DB0151EN-edX/labs/FinalProject/movies.json
+
+mongoimport -u root -p MjI2ODgtc2FuamVl --authenticationDatabase admin -d entertainment -c movies movies.json
+```
+
+![alt text](image-21.png)
+
+![alt text](image-8.png)
+
+- ### Write a mongodb query to find the year in which most number of movies were released
+  
+```Mongoshell
+db.movies.aggregate([{"$group":{"_id":"$year","moviecount":{"$sum":1}}},{$sort:{"moviecount":-1}},{$limit:1}])
+
+```
+
+
+![alt text](image-9.png)
+
+- ##  Write a mongodb query to find the count of movies released after the year 1999
+  
+```mongosh
+    db.movies.countDocuments({year:{$gt:1999}})
+```
+
+![alt text](image-10.png)
+
+
+- ## Write a query to find out the average votes for movies released in 2007
+  
+  ```mongosh
+
+    db.movies.aggregate([{$match:{year:2007}},{$group:{_id: "$year",averageVotes: { $avg: "$Votes"}}}])
+
+  ```
+
+  ![alt text](image-11.png)
+
+
+
+```
+
+    curl -O https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMSkillsNetwork-DB0151EN-edX/labs/FinalProject/partial_data.csv
+
+    COPY keyspace.table_name(columns) FROM 'file_path' WITH DELIMITER=',' AND HEADER=TRUE;
+
+    CREATE TABLE table_name(
+    field_name text PRIMARY KEY,
+    second_field_name text
+    );
+
+    CREATE INDEX IF NOT EXISTS index_name
+    ON keyspace.table_name ( column_name )  
+
+    SELECT COUNT(*) FROM table_name WHERE some_field='some value';  
+
+
+```
+```sh
+mongoexport -u
+ root -p NDQzMy1zYW5qZWV2 --authenticationDatabase admin -d entertainment -c movies -f _id,title,year,rating,director --type=csv -o partial_data.csv
+```
+
+![alt text](image-22.png)

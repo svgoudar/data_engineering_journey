@@ -274,6 +274,7 @@ In this video, you have learned that:
 - **BASE**: Prioritizes availability and partition tolerance, making it suitable for large-scale distributed systems and scenarios where eventual consistency is acceptable.
 
 ## Distributed Databases
+
 - **Fragmentation**: Enables an organization to store a large piece of data across all the servers of a distributed system by breaking the data into smaller pieces.
 - **Replication**: Involves storing copies of data on multiple servers to ensure data availability and fault tolerance.
 - **CAP Theorem**: Used to classify NoSQL databases, emphasizing that a distributed system can provide only two out of the three guarantees: Consistency, Availability, and Partition Tolerance.
