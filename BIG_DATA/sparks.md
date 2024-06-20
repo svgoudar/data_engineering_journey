@@ -19,16 +19,18 @@ Welcome to "Why Use Apache Spark." After watching this video, you will be able t
 ## What is Distributed Computing?
 
 - **Definition**: A group of computers or processors working together.
-- **Parallel vs. Distributed Computing**: 
+- **Parallel vs. Distributed Computing**:
   - Parallel computing shares all memory.
   - Distributed computing has each processor access its own memory.
 ![alt text](image-26.png)
 
 ## Benefits of Distributed Computing
+
 ![alt text](image-27.png)
-1. **Scalability and Modular Growth**: 
+
+1. **Scalability and Modular Growth**:
    - Distributed systems can scale horizontally by adding more machines.
-2. **Fault Tolerance and Redundancy**: 
+2. **Fault Tolerance and Redundancy**:
    - Systems continue to function even if some nodes fail, ensuring business continuity.
 
 ## Spark and Distributed Computing
@@ -41,6 +43,7 @@ Welcome to "Why Use Apache Spark." After watching this video, you will be able t
   - Flexible programming with Python, Scala, and Java APIs.
 
 ## Comparing Apache Spark to MapReduce
+
 ![alt text](image-28.png)
 ![alt text](image-29.png)
 
@@ -60,7 +63,6 @@ Welcome to "Why Use Apache Spark." After watching this video, you will be able t
   - Libraries like SparkML and Streaming for advanced analytics.
 ![alt text](image-30.png)
 
-
 # Functional Programming Basics
 
 Welcome to "Functional Programming Basics!" After watching this video, you will be able to:
@@ -71,27 +73,31 @@ Welcome to "Functional Programming Basics!" After watching this video, you will 
 
 ## What is Functional Programming?
 
-Functional Programming (FP) is a style of programming that follows the mathematical function format. Think of an algebra class with the f(x) notation. 
+Functional Programming (FP) is a style of programming that follows the mathematical function format. Think of an algebra class with the f(x) notation.
 ![alt text](image-31.png)
 
-### Key Characteristics of Functional Programming:
+### Key Characteristics of Functional Programming
 
 - **Declarative Nature**: Emphasis on the "what" of the solution rather than the "how to."
 - **Expressions**: Use expressions like f(x).
 
-### Historical Background:
+### Historical Background
 
 - **LISP**: The first functional programming language, starting in the 1950s.
 - **Modern Languages**: Scala, Python, R, and Java are some of the modern options.
 
 ## Functional Programming in Scala
+
 ![alt text](image-33.png)
 ![alt text](image-34.png)
+
 - **Scala**: The most recent representative in the family of functional programming languages.
 - **First-Class Functions**: Functions can be passed as arguments, returned by other functions, and used as variables.
 
-### Example:
+### Example
+
 ![alt text](image-32.png)
+
 ```scala
 val increment = (x: Int) => x + 1
 val numbers = List(1, 2, 3, 4)
@@ -102,24 +108,24 @@ This program increments each element in the list by one.
 
 ## Imperative vs. Functional Programming
 
-### Imperative Paradigm:
+### Imperative Paradigm
 
 - Uses explicit steps to perform tasks.
 - Example: Using a "for-loop" to increment each element in an array.
 
-### Functional Paradigm:
+### Functional Paradigm
 
 - Emphasizes the "what" part of the solution.
 - Directly applies functions to entire lists or arrays.
 
 ## Benefits of Functional Programming
 
-### Parallelization:
+### Parallelization
 
 - Functional programming allows tasks to be split into multiple computing chunks (nodes) and run in parallel.
 - No need to change function definitions or code to parallelize.
 
-### Example:
+### Example
 
 - Incrementing a large array from 1 to 9 by splitting the task into three nodes running in parallel.
 
@@ -128,15 +134,15 @@ This program increments each element in the list by one.
 - **Lambda Calculus**: A mathematical concept where every computation is expressed as an anonymous function applied to a data set.
 - **Lambda Functions**: Anonymous functions used to write functional programming code.
 
-### Example in Scala and Python:
+### Example in Scala and Python
 
-#### Scala:
+#### Scala
 
 ```scala
 val add = (a: Int, b: Int) => a + b
 ```
 
-#### Python:
+#### Python
 
 ```python
 add = lambda a, b: a + b
@@ -145,7 +151,9 @@ add = lambda a, b: a + b
 Both examples abstract the result directly, a hallmark of the declarative paradigm.
 
 ## Functional Programming and Apache Spark
+
 ![alt text](image-35.png)
+
 - **Parallelization**: Spark parallelizes computations using lambda functions.
 - **Scalability**: Spark programs are inherently parallel, capable of scaling from one kilobyte to one petabyte by adding more resources to the Spark cluster.
 
@@ -154,8 +162,6 @@ Both examples abstract the result directly, a hallmark of the declarative paradi
 - Functional programming follows a declarative model emphasizing "What" instead of "how to" and uses expressions.
 - Lambda functions are anonymous functions that enable functional programming.
 - Spark parallelizes computations using lambda calculus, making all functional Spark programs inherently parallel.
-
-
 
 # Parallel Programming Using Resilient Distributed Datasets (RDDs)
 
@@ -170,28 +176,30 @@ Welcome to parallel programming using resilient distributed datasets. After watc
 
 A resilient distributed dataset (RDD) is Spark's primary data abstraction. It is a collection of fault-tolerant elements partitioned across a cluster's nodes capable of receiving parallel operations. RDDs are immutable, meaning they cannot be changed once created.
 
-### Key Features of RDDs:
+### Key Features of RDDs
 
 - **Fault Tolerant**: RDDs can recover from node failures.
 - **Partitioned**: Data is split across multiple nodes for parallel processing.
 - **Immutable**: Data cannot be altered once created.
 
-### Spark Applications:
+### Spark Applications
 
 Every Spark application consists of a driver program that runs the user's main functions and executes multiple parallel operations on a cluster.
 
-### Supported File Types:
+### Supported File Types
 
 RDDs support various file types, including:
+
 - Text
 - Sequence files
 - Avro
 - Parquet
 - Hadoop input formats
 
-### Supported Storage Systems:
+### Supported Storage Systems
 
 RDDs can work with:
+
 - Local file systems
 - Cassandra
 - HBase
@@ -200,13 +208,15 @@ RDDs can work with:
 - Many relational and NoSQL databases
 
 ## Creating RDDs
-![alt text](image-36.png)
-### Methods to Create RDDs:
 
-1. **Using External or Local Files**: 
+![alt text](image-36.png)
+
+### Methods to Create RDDs
+
+1. **Using External or Local Files**:
    - From Hadoop-supported file systems like HDFS, Cassandra, HBase, or Amazon S3.
 
-2. **Using the Parallelize Function**: 
+2. **Using the Parallelize Function**:
    - Apply the parallelize function to an existing collection in the driver program.
    - This can be done in Python, Java, or Scala.
 
@@ -224,12 +234,14 @@ RDDs can work with:
 
    - Important: Specify the number of partitions to optimize parallel processing.
 
-3. **Using Transformations**: 
+3. **Using Transformations**:
    - Create a new RDD by applying a transformation to an existing RDD.
 
 ## Parallel Programming
+
 ![alt text](image-37.png)
-### Definition:
+
+### Definition
 
 Parallel programming is the simultaneous use of multiple compute resources to solve a computational task. It involves:
 
@@ -237,20 +249,20 @@ Parallel programming is the simultaneous use of multiple compute resources to so
 - Solving these parts concurrently using multiple processors.
 - Processors accessing a shared pool of memory.
 
-### RDDs and Parallel Programming:
+### RDDs and Parallel Programming
 
 RDDs enable parallel programming by distributing partitions across nodes. Spark runs one task per partition, allowing RDDs to be operated on in parallel.
 
 ## Resilience in Spark
 
-### How RDDs Provide Resilience:
+### How RDDs Provide Resilience
 
 - **Immutability**: Data is always recoverable because RDDs are immutable.
-- **Caching**: 
+- **Caching**:
   - Persisting or caching data in memory makes future actions much faster.
   - Each node stores the partitions it computes, allowing for reuse in future actions.
 
-### Benefits of Caching:
+### Benefits of Caching
 
 - **Fault Tolerance**: Cached data is fault-tolerant and recoverable.
 - **Performance**: Iterative operations are significantly faster, often by more than 10 times.
@@ -261,8 +273,6 @@ RDDs enable parallel programming by distributing partitions across nodes. Spark 
 - RDDs are immutable and always recoverable.
 - Parallel programming uses multiple compute resources to solve tasks concurrently.
 - RDDs can persist or cache datasets in memory, enhancing iterative operations.
-
-
 
 # Scale Out and Data Parallelism in Apache Spark
 
@@ -291,16 +301,19 @@ Apache Spark architecture consists of three main components:
 - **Data Flow**: Data from a Hadoop file system flows into the compute interface (API), which then distributes tasks across different nodes.
 
 ## Spark Core
+
 ![alt text](image-40.png)
+
 - **Spark Core**: The base engine for large-scale parallel and distributed data processing.
   - **Functions**:
     - Manages memory and task scheduling.
     - Contains APIs used to define RDDs and other data types.
     - Parallelizes a distributed collection of elements across the cluster.
 ![alt text](image-38.png)
+
 ## Scaling with Big Data: Spark Application Architecture
 
-### Components:
+### Components
 
 1. **Driver Program**:
    - Manages the Spark jobs and splits them into tasks.
@@ -312,17 +325,17 @@ Apache Spark architecture consists of three main components:
    - Can start additional processes if there is enough memory and cores available.
    - Can use multiple cores for multithreaded calculations.
 
-### Communication:
+### Communication
 
 - **Driver and Executors**: The driver submits tasks to executors and receives results upon completion.
 
-### Organizational Analogy:
+### Organizational Analogy
 
 - **Driver Code**: Executive management making decisions and allocating work.
 - **Executors**: Junior employees executing tasks.
 - **Worker Nodes**: Physical office space where tasks are performed.
 
-### Scaling:
+### Scaling
 
 - Add additional worker nodes to scale big data processing incrementally.
 
@@ -333,7 +346,6 @@ Apache Spark architecture consists of three main components:
 - **Driver Program**: Communicates with the cluster and distributes RDDs among worker nodes.
 
 ![alt text](image-39.png)
-
 
 # SparkSQL and DataFrames
 
@@ -380,8 +392,10 @@ df = spark.read.json("file.json")
 - Supports relational queries using RDDs.
 - Enables running SQL queries on the data.
 
-### Benefits of DataFrames:
+### Benefits of DataFrames
+
 ![alt text](image-41.png)
+
 - Highly scalable, from small to large datasets.
 - Support various data formats and storage systems.
 - Offer optimization through Catalyst.
@@ -402,7 +416,9 @@ SELECT names FROM people;
 # DataFrame API
 df.select("names")
 ```
+
 ![alt text](image-42.png)
+
 ### Filtering Data
 
 To locate people above the age of 21:
@@ -421,7 +437,6 @@ df.filter(df["age"] > 21)
 
 - SparkSQL is a module for structured data processing, providing DataFrames and a SQL query engine.
 - DataFrames offer similar functionality to tables in databases or data frames in R/Python, with optimizations for big data processing.
-
 
 Here's the information organized in a tabular format:
 
@@ -494,3 +509,684 @@ Here's the information organized in a tabular format:
 | R                                              | An open-source, optimized programming language for statistical analysis and data visualization. Developed in 1992, it has a rich ecosystem with complex data models and elegant tools for data reporting.                       |
 | Redundancy                                     | Duplication of data across multiple partitions or nodes in a cluster. This duplication is implemented to enhance fault tolerance and reliability. If one partition or node fails, the duplicated data on other partitions or nodes can still be used to ensure that the computation continues without interruption. Redundancy is critical in maintaining data availability and preventing data loss in distributed computing environments like Spark clusters. |
 | Resilient Distributed Datasets (RDDs)          | A fundamental abstraction in Apache Spark that represents distributed collections of data. RDDs allow you to perform parallel and fault-tolerant data processing across a cluster of computers. RDDs can be created from existing data in storage systems (like HDFS), and they can undergo various transformations and actions to perform operations like filtering, mapping, and aggregating. The "resilient" aspect refers to RDDs' ability
+
+# Resilient Distributed Datasets in Parallel Programming and Spark
+
+Welcome to "Resilient Distributed Datasets in Parallel Programming and Spark." After watching this video, you will be able to:
+
+- Describe Resilient Distributed Datasets.
+- Explain how to use Resilient Distributed Datasets in Spark.
+- Explain RDD transformations and actions.
+- List fundamental transformations and actions.
+
+## What are Resilient Distributed Datasets (RDDs)?
+
+Resilient Distributed Datasets, known as RDDs, are Spark's primary data abstraction and are partitioned across a cluster's nodes.
+![alt text](image-43.png)
+
+## Transformations
+
+An RDD transformation creates a new RDD from an existing RDD. Transformations in Spark are considered lazy because Spark does not compute transformation results immediately. Instead, the results are only computed when evaluated by "actions."
+
+### Example of a Transformation
+
+The `map` transformation passes each element of a dataset through a function, resulting in a new RDD.
+
+## Actions
+
+To evaluate a transformation in Spark, you use an action. The action returns a value to the driver program after running a computation.
+
+### Example of an Action
+
+The `reduce` action aggregates all the elements of an RDD and returns the result to the driver program.
+
+## Directed Acyclic Graph (DAG)
+
+Spark uses a unique data structure called a Directed Acyclic Graph (DAG) and an associated DAG Scheduler to perform RDD operations.
+
+### What is a DAG?
+
+- A DAG is a graphical structure composed of edges and vertices.
+- The term "acyclic" means that new edges only originate from an existing vertex.
+- Vertices represent RDDs, and edges represent transformations or actions.
+
+### Why does Spark use DAGs?
+
+DAGs help enable fault tolerance. When a node goes down, Spark replicates the DAG and restores the node.
+
+## Process Overview
+
+1. Spark creates a DAG when creating an RDD.
+2. The DAG Scheduler performs a transformation and updates the DAG.
+3. The DAG now points to the new RDD.
+4. If there is an action, the driver program evaluates the DAG after Spark completes the action.
+
+## Examples of RDD Transformations and Actions
+
+### Transformations
+
+- `map`: Applies a function to each element of the dataset.
+- `filter`: Filters elements based on a function.
+- `distinct`: Finds the number of distinct elements in a dataset.
+- `flatmap`: Similar to `map`, but can return multiple items for each input item.
+
+### Actions
+
+- `reduce`: Aggregates dataset elements using a function.
+- `take`: Returns an array with the first `n` elements.
+- `collect`: Returns all the elements of the dataset as an array.
+- `takeOrdered`: Returns elements ordered in ascending order or as specified by an optional function argument.
+
+For more details about transformations and actions, visit the [Spark Apache website](https://spark.apache.org).
+
+## Example
+
+![alt text](image-44.png)
+Consider a function `f(x)` that decrements `x` by 1. Applying this function as a transformation to a dataset using the `map` transformation:
+
+1. Each task makes a new partition by calling `f(e)` on each entry `e` in the original partition.
+2. The `collect` action gathers the entries from all the partitions into the driver, which receives the results.
+
+## Summary
+
+- RDDs are Spark's primary data abstraction partitioned across the nodes of the cluster.
+- Spark uses DAGs to enable fault tolerance. When a node goes down, Spark replicates the DAG and restores the node.
+- Transformations create new RDDs based on the transformation function and are evaluated lazily.
+- Actions are necessary to get the computed values to the driver program.
+
+# Datasets and DataFrames in Spark
+
+Welcome to “Datasets and DataFrames in Spark.” After watching this video, you will be able to:
+
+- Describe dataset features and benefits within Apache Spark.
+- Explain three ways you can create datasets for use in Spark.
+- Summarize the differences between datasets and DataFrames.
+
+## What are Datasets?
+
+Datasets are the newest Spark data abstraction. Like RDDs and DataFrames, datasets provide an API to access a distributed data collection. Datasets are a collection of strongly typed Java Virtual Machine (JVM) objects. Strongly typed means that datasets are typesafe, and the dataset’s datatype is made explicit during its creation.
+
+## Benefits of Datasets
+
+Datasets provide the benefits of both RDDs and DataFrames:
+
+- **Type-safety:** Datasets are strongly typed.
+- **Lambda Functions:** Datasets support lambda functions.
+- **SQL Optimizations:** Datasets benefit from SparkSQL optimizations.
+
+### Additional Features of Datasets
+
+- **Immutability:** Datasets, like RDDs, cannot be deleted or lost.
+- **Encoders:** Convert type-specified JVM objects to a tabular representation.
+- **Extension of DataFrame API:** A dataset of a generic untyped “Row” is a JVM object seen as a column of a DataFrame.
+- **Statically Typed Languages:** APIs are available in Scala and Java, which are statically typed languages. Dynamically typed languages like Python and R do not support dataset APIs.
+
+## Advantages of Datasets Over DataFrames and RDDs
+
+- **Compile-time Type Safety:** Detects syntax and semantic errors before deployment, saving time and costs.
+- **Faster Computation:** Especially for aggregate queries.
+- **Query Optimization:** Enhanced by Catalyst and Tungsten.
+- **Improved Memory Usage and Caching:** Spark optimizes the layout within memory based on the data structure.
+
+## High-level Operations
+
+The dataset API offers functions for convenient high-level aggregate operations, including:
+
+- `sum`
+- `average`
+- `join`
+- `group-by`
+
+## Creating Datasets in Spark
+
+### 1. Using `toDS` Function (Scala)
+
+```scala
+val data = Seq(1, 2, 3, 4, 5)
+val ds = data.toDS()
+```
+
+### 2. From a Text File
+
+```scala
+val textFile = spark.read.textFile("path/to/file.txt").toDS()
+```
+
+### 3. Using a JSON File with a Custom Class
+
+```scala
+case class Customer(name: String, id: Long)
+val customerDS = spark.read.json("path/to/file.json").as[Customer]
+```
+
+## Datasets vs. DataFrames
+
+- **Strongly Typed:** Datasets are strongly typed, while DataFrames are not typesafe.
+- **APIs:** Datasets use unified Java and Scala APIs. DataFrames have APIs in Java, Scala, Python, and R.
+- **Foundation:** Datasets are built on top of DataFrames, which are built on RDDs.
+
+## Summary
+
+- A dataset is a distributed collection of data that provides the combined benefits of both RDDs and SparkSQL.
+- Datasets consist of strongly typed JVM objects.
+- Datasets use DataFrame typesafe capabilities and extend object-oriented API capabilities.
+- Datasets work with both Scala and Java APIs.
+
+# Spark SQL Memory Optimization using Catalyst and Tungsten
+
+Welcome to “Spark SQL Memory Optimization using Catalyst and Tungsten.” After watching this video, you will be able to:
+
+- Describe the goals of Apache Spark SQL Optimization.
+- Explain how Catalyst and Tungsten benefit Spark SQL.
+- Explain how Spark performs SQL and memory optimization using Catalyst and Tungsten.
+
+## Goals of Spark SQL Optimization
+
+The primary goal of Spark SQL Optimization is to improve SQL query run-time performance by reducing the query’s time and memory consumption, thereby saving organizations time and money. Spark SQL supports both rule-based and cost-based query optimization.
+
+## Catalyst Optimizer
+
+Catalyst, also known as the Catalyst Optimizer, is the built-in rule-based query optimizer for Spark SQL. It is based on Scala functional programming constructs and is designed to easily add new optimization techniques and features to Spark SQL. Developers can extend the optimizer by adding data-source-specific rules and support for new data types.
+
+### Rule-based Optimization
+
+During rule-based optimization, the SQL optimizer follows predefined rules to determine how to run the SQL query. Examples of predefined rules include:
+
+- Validating that a table is indexed.
+- Checking that a query contains only the required columns.
+
+### Cost-based Optimization
+
+With the query itself optimized, cost-based optimization measures and calculates cost based on the time and memory that the query consumes. The Catalyst optimizer selects the query path that results in the lowest time and memory consumption. This process can become complex with large datasets.
+
+## Catalyst Optimization Phases
+
+Catalyst uses a tree data structure and follows four high-level tasks or phases to optimize a query:
+
+1. **Analysis**: Catalyst analyzes the query, the DataFrame, the unresolved logical plan, and the Catalog to create a logical plan.
+2. **Logical Optimization**: The logical plan evolves into an optimized logical plan. This is the rule-based optimization step, where rules like folding, pushdown, and pruning are applied.
+3. **Physical Planning**: Catalyst generates multiple physical plans based on the logical plan. A cost model then chooses the physical plan with the least cost, which is the cost-based optimization step.
+4. **Code Generation**: Catalyst applies the selected physical plan and generates Java bytecode to run on each node.
+
+## Tungsten Optimization
+
+Tungsten optimizes the performance of underlying hardware by focusing on CPU performance instead of IO. It improves CPU and memory performance using methods more suited to data processing for the JVM.
+
+### Tungsten Capabilities
+
+- **Memory Management**: Manages memory explicitly without relying on the JVM object model or garbage collection.
+- **Cache-friendly Data Structures**: Uses STRIDE-based memory access for better arrangement and security.
+- **JVM Bytecode**: Supports on-demand JVM bytecode.
+- **Reduced CPU Calls**: Eliminates virtual function dispatches.
+- **Efficient CPU Usage**: Places intermediate data in CPU registers and enables loop unrolling.
+
+## Summary
+
+- **Catalyst**: The built-in rule-based query optimizer for Spark SQL. It performs analysis, logical optimization, physical planning, and code generation.
+- **Tungsten**: The built-in cost-based optimizer for CPU and memory usage in Spark. It enables cache-friendly computation of algorithms and data structures.
+
+# User-Defined Schema (UDS) for DSL and SQL
+
+## Estimated time needed: 10 minutes
+
+In this reading, you will learn how to define and enforce a user-defined schema in PySpark.
+
+Spark provides a structured data processing framework that can define and enforce schemas for various data sources, including CSV files. Let's look at the steps to define and use a user-defined schema for a CSV file in PySpark:
+
+## Step 1: Import the Required Libraries
+
+```python
+from pyspark.sql.types import StructType, IntegerType, FloatType, StringType, StructField
+```
+
+## Step 2: Define the Schema
+
+Understanding the data before defining a schema is an important step. Let's take a look at the step-by-step approach to understanding the data and defining an appropriate schema for a given input file:
+
+### Explore the Data
+
+Understand the different data types present in each column.
+
+### Column Data Types
+
+Determine the appropriate data types for each column based on your observed values.
+
+### Define the Schema
+
+Use the `StructType` class in Spark and create a `StructField` for each column, mentioning the column name, data type, and other properties.
+
+### Example
+
+```python
+schema = StructType([
+    StructField("Emp_Id", StringType(), False),
+    StructField("Emp_Name", StringType(), False),
+    StructField("Department", StringType(), False),
+    StructField("Salary", IntegerType(), False),
+    StructField("Phone", IntegerType(), True),
+])
+```
+
+'False' indicates null values are NOT allowed for the column.
+
+### Example Data: `employee.csv`
+
+```csv
+emp_id,emp_name,dept,salary,phone
+A101,jhon,computer science,1000,+1 (701) 846 958
+A102,Peter,Electronics,2000,
+A103,Micheal,IT,2500,
+```
+
+## Step 3: Read the Input File with User-Defined Schema
+
+```python
+#create a dataframe on top of a csv file
+df = (spark.read
+  .format("csv")
+  .schema(schema)
+  .option("header", "true")
+  .load("employee.csv")
+)
+# display the dataframe content
+df.show()
+```
+
+## Step 4: Display the Schema
+
+Use the `printSchema()` method in Spark to display the schema of a DataFrame and ensure that the schema is applied correctly to the data.
+
+```python
+df.printSchema()
+```
+
+Through these four steps, you've acquired the ability to establish a schema for a CSV file. Additionally, you've employed this user-defined schema (UDF) to read the CSV file, exhibit its contents, and showcase the schema itself.
+
+# Using DataFrames with Real World Data
+
+Welcome to "Using DataFrames with Real World Data." After watching this video, you will be able to:
+
+- Identify the basic DataFrame operational steps
+- Apply basic DataFrame operations on real-world data
+- Apply Spark DataFrames to real-world data
+
+## Basic DataFrame Operations
+
+DataFrame operations can be summarized in the following steps:
+
+1. **Reading**
+2. **Analysis**
+3. **Transformation**
+4. **Loading**
+5. **Writing**
+
+### Step 1: Reading Data
+
+Spark reads in the data and loads it into a DataFrame. For example, you can load a dataset into a Pandas DataFrame in Python and then load that same dataset into a Spark DataFrame object.
+
+### Step 2: Analyzing Data
+
+Analyze the dataset by examining:
+
+- Columns
+- Data types
+- Number of rows
+
+You can also perform aggregated stats, trend analysis, and other operations.
+
+#### Example Analysis
+
+- **Print Schema**: Examine the DataFrame column data types.
+  
+  ```python
+  df.printSchema()
+  ```
+  
+- **Show Function**: View a specified number of DataFrame rows.
+  
+  ```python
+  df.show(5)
+  ```
+  
+- **Select Function**: Examine data from a specific column.
+
+  ```python
+  df.select("mpg").show(5)
+  ```
+
+### Step 3: Transforming Data
+
+Transform the data to retain only relevant information. Common transformation techniques include:
+
+- **Filtering**: Locate specific values.
+  
+  ```python
+  df.filter(df["mpg"] < 18).show()
+  ```
+  
+- **Sorting**: Sort the dataset based on specific criteria.
+- **Joining**: Join this dataset with another dataset.
+- **Columnar Operations**: Multiply each column by a specific number, convert units, etc.
+- **Grouping/Aggregating**: Aggregate data, such as grouping by a column and calculating sums or averages.
+
+#### Example Transformation
+
+- **Filter Function**: Filter the dataset for cars with mileage less than 18 miles per gallon.
+  
+  ```python
+  df.filter(df["mpg"] < 18).show()
+  ```
+
+- **Aggregation**: Aggregate records with the same number of cylinders and count the vehicles.
+
+  ```python
+  df.groupBy("cyl").count().orderBy("cyl").show()
+  ```
+
+### Step 4: Loading Data
+
+Load your transformed dataset back to a database or a file system.
+
+### Step 5: Writing Data
+
+Write the data back to disk, save it into another database, or export it using an API.
+
+```python
+# Example: Save the DataFrame to a JSON file
+df.write.format("json").save("output.json")
+```
+
+## ETL and ELT Processes
+
+### ETL: Extract, Transform, Load
+
+- **Extract**: Read data from various sources.
+- **Transform**: Process and transform data as needed.
+- **Load**: Load transformed data into a data warehouse or database.
+
+ETL is essential for making data accessible to data warehouses, machine learning models, and other downstream applications.
+
+### ELT: Extract, Load, Transform
+
+- **Extract**: Read data and load it into a data lake.
+- **Load**: Store all data in its raw form.
+- **Transform**: Transform data as needed for specific projects.
+
+ELT is beneficial for big data processing, where transformations are applied individually for each project.
+
+## Summary
+
+In this video, you learned that:
+
+- Basic DataFrame operations are reading, analysis, transformation, loading, and writing.
+- You can use a Pandas DataFrame in Python to load a dataset.
+- You can apply the `printSchema`, `select`, and `show` functions for data analysis.
+- For transform tasks, keep only relevant data and apply functions such as filters, joins, column operations, grouping, and aggregations.
+
+# Welcome to "Apache Spark SQL"
+
+After watching this video, you will be able to:
+
+- Define Spark SQL
+- Create a table view in Spark SQL
+- Explain how to aggregate data using Spark SQL
+- Explain the various data sources Spark SQL supports
+
+## Quick Recap of Spark SQL
+
+### What is Spark SQL?
+
+Spark SQL is a Spark module for structured data processing. It is used to run SQL queries on Spark DataFrames and has available APIs in Java, Scala, Python, and R.
+
+### Creating a Table View in Spark SQL
+
+The first step to running SQL queries in Spark SQL is to create a table view. A table view is a temporary table used to run SQL queries. Spark SQL supports both temporary and global temporary table views.
+
+- **Temporary View**: Has local scope, meaning it exists only within the current Spark session on the current node.
+- **Global Temporary View**: Exists within the general Spark application and is shareable across different Spark sessions.
+
+#### Example: Creating a Temporary View in Python using PySpark
+
+First, create the DataFrame from the JSON file, then create a temporary view called "people." You can then run a SQL query using this view.
+
+![alt text](image-45.png)
+
+#### Example: Creating a Global Temporary View
+
+![alt text](image-46.png)
+Note the minor syntax change, including the "Global" prefix to the function name and the "global_temp" prefix to the view name.
+
+### Aggregating Data Using Spark SQL
+
+Aggregation, a standard Spark SQL process, is generally used to present grouped statistics. DataFrames come inbuilt with commonly used aggregation functions such as count, average, max, and others. You can also perform aggregation programmatically using SQL queries and table views.
+
+1. **Import Your Data into a DataFrame**: Use pandas on Python to read the CSV file and create a DataFrame.
+2. **Examine Data**: Apply the Select function to view the first five rows of the "mpg" column.
+
+#### Example: Aggregating and Grouping Cars by Cylinders
+
+![alt text](image-47.png)
+You can perform this action using two methods:
+
+1. **Inbuilt Functions of the DataFrame**: Use DataFrame functions to group and aggregate data.
+2. **SQL Query with Table View**: Create a temp view for the DataFrame and run a SQL query to group by cylinders and view the data in descending order.
+
+Both approaches produce the same results.
+
+### Data Sources Supported by Spark SQL
+
+1. **Parquet**: A columnar format supported by many data processing systems. Spark SQL supports reading and writing data from Parquet files and preserves the data schema.
+2. **JSON**: Spark SQL can load and write to JSON datasets by inferring the schema.
+3. **Hive**: Spark SQL supports reading and writing data stored in Hive.
+
+## Summary
+
+In this video, you learned that:
+
+- Spark modules for structured data processing can run SQL queries on Spark DataFrames and are usable in Java, Scala, Python, and R.
+- Spark SQL supports both temporary views and global temporary views.
+- You can use a DataFrame function or a SQL Query plus Table View for data aggregation.
+- Spark SQL supports Parquet files, JSON datasets, and Hive tables.
+
+# Common Transformations and Optimization Techniques in Spark
+
+**Estimated time needed:** 30 minutes
+
+When working with PySpark DataFrames for data processing, it's important to understand the two types of transformations: narrow and wide.
+
+## Narrow Transformations
+
+Narrow transformations in Spark work within partitions without shuffling data between them. They're applied locally to each partition, avoiding data exchange.
+
+**Examples of Narrow Transformations:**
+
+- **Map:** Applying a function to each element in the data set.
+
+    ```python
+    from pyspark import SparkContext
+    sc = SparkContext("local", "MapExample")
+    data = [1, 2, 3, 4, 5]
+    rdd = sc.parallelize(data)
+    mapped_rdd = rdd.map(lambda x: x * 2)
+    mapped_rdd.collect() # Output: [2, 4, 6, 8, 10]
+    ```
+
+- **Filter:** Selecting elements based on a specified condition.
+
+    ```python
+    from pyspark import SparkContext
+    sc = SparkContext("local", "FilterExample")
+    data = [1, 2, 3, 4, 5]
+    rdd = sc.parallelize(data)
+    filtered_rdd = rdd.filter(lambda x: x % 2 == 0)
+    filtered_rdd.collect() # Output: [2, 4]
+    ```
+
+- **Union:** Combining two data sets with the same schema.
+
+    ```python
+    from pyspark import SparkContext
+    sc = SparkContext("local", "UnionExample")
+    rdd1 = sc.parallelize([1, 2, 3])
+    rdd2 = sc.parallelize([4, 5, 6])
+    union_rdd = rdd1.union(rdd2)
+    union_rdd.collect() # Output: [1, 2, 3, 4, 5, 6]
+    ```
+
+## Wide Transformations
+
+Wide transformations in Spark involve redistributing and shuffling data between partitions, leading to more resource-intensive and complex operations.
+
+**Examples of Wide Transformations:**
+
+- **GroupBy:** Aggregating data based on a specific key.
+
+    ```python
+    from pyspark import SparkContext
+    sc = SparkContext("local", "GroupByExample")
+    data = [("apple", 2), ("banana", 3), ("apple", 5), ("banana", 1)]
+    rdd = sc.parallelize(data)
+    grouped_rdd = rdd.groupBy(lambda x: x[0])
+    sum_rdd = grouped_rdd.mapValues(lambda values: sum([v[1] for v in values]))
+    sum_rdd.collect() # Output: [('apple', 7), ('banana', 4)]
+    ```
+
+- **Join:** Combining two data sets based on a common key.
+
+    ```python
+    from pyspark import SparkContext
+    sc = SparkContext("local", "JoinExample")
+    rdd1 = sc.parallelize([("apple", 2), ("banana", 3)])
+    rdd2 = sc.parallelize([("apple", 5), ("banana", 1)])
+    joined_rdd = rdd1.join(rdd2)
+    joined_rdd.collect() # Output: [('apple', (2, 5)), ('banana', (3, 1))]
+    ```
+
+- **Sort:** Rearranging data based on a specific criterion.
+
+    ```python
+    from pyspark import SparkContext
+    sc = SparkContext("local", "SortExample")
+    data = [4, 2, 1, 3, 5]
+    rdd = sc.parallelize(data)
+    sorted_rdd = rdd.sortBy(lambda x: x, ascending=True)
+    sorted_rdd.collect() # Output: [1, 2, 3, 4, 5]
+    ```
+
+## PySpark DataFrame: Rule-Based Common Transformations
+
+The DataFrame API in PySpark offers various transformations based on predefined rules designed to improve query execution and boost overall performance.
+
+**Common Rule-Based Transformations:**
+
+- **Predicate Pushdown:** Pushing filtering conditions closer to the data source to minimize data movement.
+- **Constant Folding:** Evaluating constant expressions during query compilation to reduce computation during runtime.
+- **Column Pruning:** Eliminating unnecessary columns from the query plan to enhance processing efficiency.
+- **Join Reordering:** Rearranging join operations to minimize intermediate data size and enhance performance.
+
+**Example Code:**
+
+```python
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col
+
+# Create a Spark session
+spark = SparkSession.builder.appName("RuleBasedTransformations").getOrCreate()
+
+# Sample input data for DataFrame 1
+data1 = [("Alice", 25, "F"), ("Bob", 30, "M"), ("Charlie", 22, "M"), ("Diana", 28, "F")]
+
+# Sample input data for DataFrame 2
+data2 = [("Alice", "New York"), ("Bob", "San Francisco"), ("Charlie", "Los Angeles"), ("Eve", "Chicago")]
+
+# Create DataFrames
+columns1 = ["name", "age", "gender"]
+df1 = spark.createDataFrame(data1, columns1)
+columns2 = ["name", "city"]
+df2 = spark.createDataFrame(data2, columns2)
+
+# Applying Predicate Pushdown (Filtering)
+filtered_df = df1.filter(col("age") > 25)
+
+# Applying Constant Folding
+folded_df = filtered_df.select(col("name"), col("age") + 2)
+
+# Applying Column Pruning
+pruned_df = folded_df.select(col("name"))
+
+# Join Reordering
+reordered_join = df1.join(df2, on="name")
+
+# Show the final results
+print("Filtered DataFrame:")
+filtered_df.show()
+print("Folded DataFrame:")
+folded_df.show()
+print("Pruned DataFrame:")
+pruned_df.show()
+print("Reordered Join DataFrame:")
+reordered_join.show()
+
+# Stop the Spark session
+spark.stop()
+```
+
+## Optimization Techniques Used in Spark SQL
+
+**Predicate Pushdown:** Apply a filter to DataFrame `df1` to only select rows where the "age" column is greater than 25.
+
+**Constant Folding:** Perform an arithmetic operation on the "age" column in `folded_df`, adding a constant value of 2.
+
+**Column Pruning:** Select only the "name" column in `pruned_df`, eliminating unnecessary columns from the query plan.
+
+**Join Reordering:** Perform a join between `df1` and `df2` on the "name" column, allowing Spark to potentially reorder the join for better performance.
+
+## Cost-Based Optimization Techniques in Spark
+
+Spark employs cost-based optimization techniques to enhance the efficiency of query execution. These methods involve estimating and analyzing the costs associated with queries, leading to more informed decisions that result in improved performance.
+
+**Cost-Based Techniques:**
+
+- **Adaptive Query Execution:** Dynamically adjusts the query plan during execution based on runtime statistics to optimize performance.
+- **Cost-Based Join Reordering:** Optimizes join order based on estimated costs of different join paths.
+- **Broadcast Hash Join:** Optimizes small-table joins by broadcasting one table to all nodes, reducing data shuffling.
+- **Shuffle Partitioning and Memory Management:** Efficiently manages data shuffling during operations like `groupBy` and aggregation, optimizing memory usage.
+
+**Example Code:**
+
+```python
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col
+
+# Create a Spark session
+spark = SparkSession.builder.appName("CostBasedOptimization").getOrCreate()
+
+# Sample input data for DataFrame 1
+data1 = [("Alice", 25), ("Bob", 30), ("Charlie", 22), ("Diana", 28)]
+
+# Sample input data for DataFrame 2
+data2 = [("Alice", "New York"), ("Bob", "San Francisco"), ("Charlie", "Los Angeles"), ("Eve", "Chicago")]
+
+# Create DataFrames
+columns1 = ["name", "age"]
+df1 = spark.createDataFrame(data1, columns1)
+columns2 = ["name", "city"]
+df2 = spark.createDataFrame(data2, columns2)
+
+# Enable adaptive query execution
+spark.conf.set("spark.sql.adaptive.enabled", "true")
+
+# Applying Adaptive Query Execution (Runtime adaptive optimization)
+optimized_join = df1.join(df2, on="name")
+
+# Show the optimized join result
+print("Optimized Join DataFrame:")
+optimized_join.show()
+
+# Stop the Spark session
+spark.stop()
+```
+
+In this example, we created two DataFrames (`df1` and `df2`) with sample input data. Then, we enabled the adaptive query execution feature by setting the configuration parameter `"spark.sql.adaptive.enabled"` to `"true"`. Adaptive Query Execution allows Spark to adjust the query plan during execution based on runtime statistics.
+
+The code performs a join between `df1` and `df2` on the "name" column. Spark's adaptive query execution dynamically adjusts the query plan based on runtime statistics, which can result in improved performance.
