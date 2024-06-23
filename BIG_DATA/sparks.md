@@ -1190,3 +1190,583 @@ spark.stop()
 In this example, we created two DataFrames (`df1` and `df2`) with sample input data. Then, we enabled the adaptive query execution feature by setting the configuration parameter `"spark.sql.adaptive.enabled"` to `"true"`. Adaptive Query Execution allows Spark to adjust the query plan during execution based on runtime statistics.
 
 The code performs a join between `df1` and `df2` on the "name" column. Spark's adaptive query execution dynamically adjusts the query plan based on runtime statistics, which can result in improved performance.
+
+# Common Transformations and Optimization Techniques in Spark
+
+**Estimated time needed:** 30 minutes
+
+When working with PySpark DataFrames for data processing, it's important to understand the two types of transformations: narrow and wide.
+
+## Narrow Transformations
+
+Narrow transformations in Spark work within partitions without shuffling data between them. They're applied locally to each partition, avoiding data exchange.
+
+**Examples of Narrow Transformations:**
+
+- **Map:** Applying a function to each element in the data set.
+
+    ```python
+    from pyspark import SparkContext
+    sc = SparkContext("local", "MapExample")
+    data = [1, 2, 3, 4, 5]
+    rdd = sc.parallelize(data)
+    mapped_rdd = rdd.map(lambda x: x * 2)
+    mapped_rdd.collect() # Output: [2, 4, 6, 8, 10]
+    ```
+
+- **Filter:** Selecting elements based on a specified condition.
+
+    ```python
+    from pyspark import SparkContext
+    sc = SparkContext("local", "FilterExample")
+    data = [1, 2, 3, 4, 5]
+    rdd = sc.parallelize(data)
+    filtered_rdd = rdd.filter(lambda x: x % 2 == 0)
+    filtered_rdd.collect() # Output: [2, 4]
+    ```
+
+- **Union:** Combining two data sets with the same schema.
+
+    ```python
+    from pyspark import SparkContext
+    sc = SparkContext("local", "UnionExample")
+    rdd1 = sc.parallelize([1, 2, 3])
+    rdd2 = sc.parallelize([4, 5, 6])
+    union_rdd = rdd1.union(rdd2)
+    union_rdd.collect() # Output: [1, 2, 3, 4, 5, 6]
+    ```
+
+## Wide Transformations
+
+Wide transformations in Spark involve redistributing and shuffling data between partitions, leading to more resource-intensive and complex operations.
+
+**Examples of Wide Transformations:**
+
+- **GroupBy:** Aggregating data based on a specific key.
+
+    ```python
+    from pyspark import SparkContext
+    sc = SparkContext("local", "GroupByExample")
+    data = [("apple", 2), ("banana", 3), ("apple", 5), ("banana", 1)]
+    rdd = sc.parallelize(data)
+    grouped_rdd = rdd.groupBy(lambda x: x[0])
+    sum_rdd = grouped_rdd.mapValues(lambda values: sum([v[1] for v in values]))
+    sum_rdd.collect() # Output: [('apple', 7), ('banana', 4)]
+    ```
+
+- **Join:** Combining two data sets based on a common key.
+
+    ```python
+    from pyspark import SparkContext
+    sc = SparkContext("local", "JoinExample")
+    rdd1 = sc.parallelize([("apple", 2), ("banana", 3)])
+    rdd2 = sc.parallelize([("apple", 5), ("banana", 1)])
+    joined_rdd = rdd1.join(rdd2)
+    joined_rdd.collect() # Output: [('apple', (2, 5)), ('banana', (3, 1))]
+    ```
+
+- **Sort:** Rearranging data based on a specific criterion.
+
+    ```python
+    from pyspark import SparkContext
+    sc = SparkContext("local", "SortExample")
+    data = [4, 2, 1, 3, 5]
+    rdd = sc.parallelize(data)
+    sorted_rdd = rdd.sortBy(lambda x: x, ascending=True)
+    sorted_rdd.collect() # Output: [1, 2, 3, 4, 5]
+    ```
+
+## PySpark DataFrame: Rule-Based Common Transformations
+
+The DataFrame API in PySpark offers various transformations based on predefined rules designed to improve query execution and boost overall performance.
+
+**Common Rule-Based Transformations:**
+
+- **Predicate Pushdown:** Pushing filtering conditions closer to the data source to minimize data movement.
+- **Constant Folding:** Evaluating constant expressions during query compilation to reduce computation during runtime.
+- **Column Pruning:** Eliminating unnecessary columns from the query plan to enhance processing efficiency.
+- **Join Reordering:** Rearranging join operations to minimize intermediate data size and enhance performance.
+
+**Example Code:**
+
+```python
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col
+
+# Create a Spark session
+spark = SparkSession.builder.appName("RuleBasedTransformations").getOrCreate()
+
+# Sample input data for DataFrame 1
+data1 = [("Alice", 25, "F"), ("Bob", 30, "M"), ("Charlie", 22, "M"), ("Diana", 28, "F")]
+
+# Sample input data for DataFrame 2
+data2 = [("Alice", "New York"), ("Bob", "San Francisco"), ("Charlie", "Los Angeles"), ("Eve", "Chicago")]
+
+# Create DataFrames
+columns1 = ["name", "age", "gender"]
+df1 = spark.createDataFrame(data1, columns1)
+columns2 = ["name", "city"]
+df2 = spark.createDataFrame(data2, columns2)
+
+# Applying Predicate Pushdown (Filtering)
+filtered_df = df1.filter(col("age") > 25)
+
+# Applying Constant Folding
+folded_df = filtered_df.select(col("name"), col("age") + 2)
+
+# Applying Column Pruning
+pruned_df = folded_df.select(col("name"))
+
+# Join Reordering
+reordered_join = df1.join(df2, on="name")
+
+# Show the final results
+print("Filtered DataFrame:")
+filtered_df.show()
+print("Folded DataFrame:")
+folded_df.show()
+print("Pruned DataFrame:")
+pruned_df.show()
+print("Reordered Join DataFrame:")
+reordered_join.show()
+
+# Stop the Spark session
+spark.stop()
+```
+
+## Optimization Techniques Used in Spark SQL
+
+**Predicate Pushdown:** Apply a filter to DataFrame `df1` to only select rows where the "age" column is greater than 25.
+
+**Constant Folding:** Perform an arithmetic operation on the "age" column in `folded_df`, adding a constant value of 2.
+
+**Column Pruning:** Select only the "name" column in `pruned_df`, eliminating unnecessary columns from the query plan.
+
+**Join Reordering:** Perform a join between `df1` and `df2` on the "name" column, allowing Spark to potentially reorder the join for better performance.
+
+## Cost-Based Optimization Techniques in Spark
+
+Spark employs cost-based optimization techniques to enhance the efficiency of query execution. These methods involve estimating and analyzing the costs associated with queries, leading to more informed decisions that result in improved performance.
+
+**Cost-Based Techniques:**
+
+- **Adaptive Query Execution:** Dynamically adjusts the query plan during execution based on runtime statistics to optimize performance.
+- **Cost-Based Join Reordering:** Optimizes join order based on estimated costs of different join paths.
+- **Broadcast Hash Join:** Optimizes small-table joins by broadcasting one table to all nodes, reducing data shuffling.
+- **Shuffle Partitioning and Memory Management:** Efficiently manages data shuffling during operations like `groupBy` and aggregation, optimizing memory usage.
+
+**Example Code:**
+
+```python
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col
+
+# Create a Spark session
+spark = SparkSession.builder.appName("CostBasedOptimization").getOrCreate()
+
+# Sample input data for DataFrame 1
+data1 = [("Alice", 25), ("Bob", 30), ("Charlie", 22), ("Diana", 28)]
+
+# Sample input data for DataFrame 2
+data2 = [("Alice", "New York"), ("Bob", "San Francisco"), ("Charlie", "Los Angeles"), ("Eve", "Chicago")]
+
+# Create DataFrames
+columns1 = ["name", "age"]
+df1 = spark.createDataFrame(data1, columns1)
+columns2 = ["name", "city"]
+df2 = spark.createDataFrame(data2, columns2)
+
+# Enable adaptive query execution
+spark.conf.set("spark.sql.adaptive.enabled", "true")
+
+# Applying Adaptive Query Execution (Runtime adaptive optimization)
+optimized_join = df1.join(df2, on="name")
+
+# Show the optimized join result
+print("Optimized Join DataFrame:")
+optimized_join.show()
+
+# Stop the Spark session
+spark.stop()
+```
+
+In this example, we created two DataFrames (`df1` and `df2`) with sample input data. Then, we enabled the adaptive query execution feature by setting the configuration parameter `"spark.sql.adaptive.enabled"` to `"true"`. Adaptive Query Execution allows Spark to adjust the query plan during execution based on runtime statistics.
+
+The code performs a join between `df1` and `df2` on the "name" column. Spark's adaptive query execution dynamically adjusts the query plan based on runtime statistics, which can result in improved performance.
+
+Here is the requested table in markdown format:
+
+| Package/Method           | Description                                                                                                                                            | Code Example                                                                                                        |
+|--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| appName()                | A name for your job to display on the cluster web UI.                                                                                                  | ```python\nfrom pyspark.sql import SparkSession\nspark = SparkSession.builder.appName("MyApp").getOrCreate()\n```    |
+| createDataFrame()        | Used to load the data into a Spark DataFrame.                                                                                                          | ```python\nfrom pyspark.sql import SparkSession\nspark = SparkSession.builder.appName("MyApp").getOrCreate()\ndata = [("Jhon", 30), ("Peter", 25), ("Bob", 35)]\ncolumns = ["name", "age"]\n```\nCreating a DataFrame\n```python\ndf = spark.createDataFrame(data, columns)\n``` |
+| createTempView()         | Create a temporary view that can later be used to query the data. The only required parameter is the name of the view.                                  | ```python\ndf.createOrReplaceTempView("cust_tbl")\n```                                                              |
+| fillna()                 | Used to replace NULL/None values on all or selected multiple DataFrame columns with either zero (0), empty string, space, or any constant literal values. | Replace NULL/None values in a DataFrame\n```python\nfilled_df = df.fillna(0)\n```\nReplace with zero                |
+| filter()                 | Returns an iterator where the items are filtered through a function to test if the item is accepted or not.                                              | ```python\nfiltered_df = df.filter(df['age'] > 30)\n```                                                             |
+| getOrCreate()            | Get or instantiate a SparkContext and register it as a singleton object.                                                                                | ```python\nspark = SparkSession.builder.getOrCreate()\n```                                                          |
+| groupby()                | Used to collect the identical data into groups on DataFrame and perform count, sum, avg, min, max functions on the grouped data.                        | Grouping data and performing aggregation\n```python\ngrouped_df = df.groupBy("age").agg({"age": "count"})\n```      |
+| head()                   | Returns the first n rows for the object based on position.                                                                                             | Returning the first 5 rows\n```python\nfirst_5_rows = df.head(5)\n```                                               |
+| import                   | Used to make code from one module accessible in another. Python imports are crucial for a successful code structure.                                    | ```python\nfrom pyspark.sql import SparkSession\n```                                                                |
+| pd.read_csv()            | Required to access data from the CSV file from Pandas that retrieves data in the form of the data frame.                                                | ```python\nimport pandas as pd\n```\nReading data from a CSV file into a DataFrame\n```python\ndf_from_csv = pd.read_csv("data.csv")\n``` |
+| pip                      | To ensure that requests will function, the pip program searches for the package in the Python Package Index (PyPI), resolves any dependencies, and installs everything in your current Python environment. | ```python\npip list\n```                                                                                          |
+| pip install              | The pip install <package> command looks for the latest version of the package and installs it.                                                          | ```python\npip install pyspark\n```                                                                                 |
+| printSchema()            | Used to print or display the schema of the DataFrame or data set in tree format along with the column name and data type. If you have a DataFrame or data set with a nested structure, it displays the schema in a nested tree format. | ```python\ndf.printSchema()\n```                                                                                   |
+| rename()                 | Used to change the row indexes and the column labels.                                                                                                  | ```python\nimport pandas as pd\n```\nCreate a sample DataFrame\n```python\ndata = {'A': [1, 2, 3], 'B': [4, 5, 6]}\ndf = pd.DataFrame(data)\n```\nRename columns\n```python\ndf = df.rename(columns={'A': 'X', 'B': 'Y'})\n```\nThe columns 'A' and 'B' are now renamed to 'X' and 'Y'\n```python\nprint(df)\n``` |
+| select()                 | Used to select one or multiple columns, nested columns, column by index, all columns from the list, by regular expression from a DataFrame. select() is a transformation function in Spark and returns a new DataFrame with the selected columns. | ```python\nselected_df = df.select('name', 'age')\n```                                                             |
+| show()                   | Spark DataFrame show() is used to display the contents of the DataFrame in a table row and column format. By default, it shows only twenty rows, and the column values are truncated at twenty characters. | ```python\ndf.show()\n```                                                                                           |
+| sort()                   | Used to sort DataFrame by ascending or descending order based on single or multiple columns.                                                           | Sorting DataFrame by a column in ascending order\n```python\nsorted_df = df.sort("age")\n```\nSorting DataFrame by multiple columns in descending order\n```python\nsorted_df_desc = df.sort(["age", "name"], ascending=[False, True])\n``` |
+| SparkContext()           | It is an entry point to Spark and is defined in org.apache.spark package since version 1.x and used to programmatically create Spark RDD, accumulators, and broadcast variables on the cluster. | ```python\nfrom pyspark import SparkContext\n```\nCreating a SparkContext\n```python\nsc = SparkContext("local", "MyApp")\n``` |
+| SparkSession             | It is an entry point to Spark, and creating a SparkSession instance would be the first statement you would write to the program with RDD, DataFrame, and dataset. | ```python\nfrom pyspark.sql import SparkSession\n```\nCreating a SparkSession\n```python\nspark = SparkSession.builder.appName("MyApp").getOrCreate()\n``` |
+| spark.read.json()        | Spark SQL can automatically infer the schema of a JSON data set and load it as a DataFrame. The read.json() function loads data from a directory of JSON files where each line of the files is a JSON object. Note that the file offered as a JSON file is not a typical JSON file. | ```python\njson_df = spark.read.json("customer.json")\n```                                                         |
+| spark.sql()              | To issue any SQL query, use the sql() method on the SparkSession instance. All spark.sql queries executed in this manner return a DataFrame on which you may perform further Spark operations if required. | ```python\nresult = spark.sql("SELECT name, age FROM cust_tbl WHERE age > 30")\nresult.show()\n```                  |
+| spark.udf.register()     | In PySpark DataFrame, it is used to register a user-defined function (UDF) with Spark, making it accessible for use in Spark SQL queries. This allows you to apply custom logic or operations to DataFrame columns using SQL expressions. | Registering a UDF (User-defined Function)\n```python\nfrom pyspark.sql.functions import udf\nfrom pyspark.sql.types import StringType\ndef my_udf(value):\nreturn value.upper()\nspark.udf.register("my_udf", my_udf, StringType())\n``` |
+| where()                  | Used to filter the rows from DataFrame based on the given condition. Both filter() and where() functions are used for the same purpose.                 | Filtering rows based on a condition\n```python\nfiltered_df = df.where(df['age'] > 30)\n```                         |
+| withColumn()             | Transformation function of DataFrame used to change the value, convert the data type of an existing column, create a new column, and many more.         | Adding a new column and performing transformations\n```python\nfrom pyspark.sql.functions import col\nnew_df = df.withColumn("age_squared", col("age") ** 2)\n``` |
+| withColumnRenamed()      | Returns a new DataFrame by renaming an existing column.                                                                                                | Renaming an existing column\n```python\nrenamed_df = df.withColumnRenamed("age", "years_old")\n```                  |
+
+| Term                                 | Definition                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+|--------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Aggregating data                     | Aggregation is a Spark SQL process frequently used to present aggregated statistics. Commonly used aggregation functions such as count(), avg(), max(), and others are built into DataFrames. Users can also perform aggregation programmatically using SQL queries and table views.                                                                                                                                                                                                                                                                                                                                                                                               |
+| Analyze data using printSchema       | In this phase, users examine the schema or the DataFrame column data types using the print schema method. It is imperative to note the data types in each column. Users can apply the select() function to examine data from a specific column in detail.                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| Apache Spark                         | An in-memory and open-source application framework for distributed data processing and iterative analysis of enormous data volumes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| Catalyst phases                      | Catalyst analyzes the query, DataFrame, unresolved logical plan, and Catalog to create a logical plan in the Analysis phase. The logical plan evolves into an optimized logical plan in the logical optimization phase. It is the rule-based optimization step of Spark SQL. Rules such as folding, pushdown, and pruning are applicable here. Catalyst generates multiple physical plans based on the logical plan in the physical planning phase. A physical plan describes computation on datasets with specific definitions explaining how to conduct the computation. A cost model then selects the physical plan with the least cost. This explains the cost-based optimization step. Code generation is the final phase. In this phase, the Catalyst applies the selected physical plan and generates Java bytecode to run on the nodes. |
+| Catalyst query optimization          | Catalyst Optimizer uses a tree data structure and provides the data tree rule sets in the background. Catalyst performs the following four high-level tasks to optimize a query: analysis, logical optimization, physical planning, and code generation.                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Catalyst                             | Within Spark's operational framework, it employs a pair of engines, namely Catalyst and Tungsten, in a sequential manner for query enhancement and execution. Catalyst's primary function involves deriving an optimized physical query plan from the initial logical query plan. This optimization process entails implementing a range of transformations such as predicate pushdown, column pruning, and constant folding onto the logical plan.                                                                                                                                                                                                               |
+| Cost-based optimization              | Cost is measured and calculated based on the time and memory that a query consumes. Catalyst optimizer selects a query path that results in minimal time and memory consumption. As queries can use multiple paths, these calculations can become quite complex when large datasets are part of the calculation.                                                                                                                                                                                                                                                                                                                                                          |
+| Creating a view in Spark SQL         | It is the first step in running SQL queries in Spark SQL. It is a temporary table used to run SQL queries. Both temporary and global temporary views are supported by Spark SQL. A temporary view has a local scope. Local scope implies that the view exists within the current Spark session on the current node. A global temporary view exists within the general Spark application. This view is shareable across different Spark sessions.                                                                                                                                                                                                                                     |
+| DAGScheduler                         | As Spark acts and transforms data in the task execution processes, the DAGScheduler facilitates efficiency by orchestrating the worker nodes across the cluster. This task-tracking makes fault tolerance possible, as it reapplies the recorded operations to the data from a previous state.                                                                                                                                                                                                                                                                                                                                                                         |
+| DataFrame operations                 | Refer to a set of actions and transformations that can be applied to a DataFrame, which is a two-dimensional data structure in Spark. Data within a DataFrame is organized in a tabular format with rows and columns, similar to a table in a relational database. These operations encompass a wide range of tasks, including reading data into a DataFrame, performing data analysis, executing data transformations (such as filtering, grouping, and aggregating), loading data from external sources, and writing data to various output formats. DataFrame operations are fundamental for working with structured data efficiently in Spark.                                        |
+| DataFrames                           | Data collection is categorically organized into named columns. DataFrames are conceptually equivalent to a table in a relational database and similar to a data frame in R or Python, but with greater optimizations. They are built on top of the SparkSQL RDD API. They use RDDs to perform relational queries. Also, they are highly scalable and support many data formats and storage systems. They are developer-friendly, offering integration with most big data tooling via Spark and APIs for Python, Java, Scala, and R.                                                                                                                                                        |
+| Dataset                              | The newest Spark data abstraction, like RDDs and DataFrames, provide APIs to access a distributed data collection. They are a collection of strongly typed Java Virtual Machine, or JVM, objects. Strongly typed implies that datasets are typesafe, and the data set's datatype is made explicit during its creation. They offer benefits of both RDDs, such as lambda functions, type-safety, and SQL Optimizations from SparkSQL.                                                                                                                                                                                                                                        |
+| Directed acyclic graph (DAG)         | Spark uses a DAG and an associated DAGScheduler to perform RDD operations. It is a graphical structure composed of edges and vertices. Acyclic implies new edges can originate only from an existing vertex. The vertices and edges are sequential. The edges represent transformations or actions. The vertices represent RDDs. The DAGScheduler applies a graphical structure to run tasks using the RDD, performing transformation processes. DAG enables fault tolerance. Spark replicates the DAG and restores the node when a node goes down.                                                                                                                                         |
+| distinct ([numTasks]))               | It helps in finding the number of varied elements in a dataset. It returns a new dataset containing distinct elements from the source dataset.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| Extract, load, and transform (ELT)   | It emerged because of big data processing. All the data resides in a data lake. A data lake is a pool of raw data for which the data purpose is not predefined. In a data lake, each project forms individual transformation tasks as required. It does not anticipate all the transformation requirements usage scenarios as in the case of ETL and a data warehouse. Organizations opt to use a mixture of ETL and ELT.                                                                                                                                                                                                                                               |
+| Extract, transform, load (ETL)       | It is an important process in any data processing pipeline as the first step that provides data to warehouses for downstream applications, machine learning models, and other services.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| filter (func)                        | It helps in filtering the elements of a data set basis its function. The filter operation is used to selectively retain elements from a data set or DataFrame based on a provided function (func). It allows you to filter and extract specific elements that meet certain criteria, making it a valuable tool for data transformation and analysis.                                                                                                                                                                                                                                                                                                                 |
+| flatmap (func)                       | Similar to map (func) can map each input item to zero or more output items. Its function should return a Seq rather than a single item.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| Hive tables                          | Spark supports reading and writing data stored in Apache Hive.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| Java virtual machines (JVMs)         | The platform-specific component that runs a Java program. At run time, the VM interprets the Java bytecode compiled by the Java Compiler. The VM is a translator between the language and the underlying operating system and hardware.                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| JavaScript Object Notation (JSON)    | A simplified data-interchange format based on a subset of the JavaScript programming language. IBM® Integration Bus provides support for a JSON domain. The JSON parser and serializer process messages in the JSON domain.                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| JSON data sets                       | Spark infers the schema and loads the data set as a DataFrame.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| Loading or exporting the data        | In the ETL pipeline's last step, data is exported to disk or loaded into another database. Also, users can write the data to the disk as a JSON file or save the data into another database, such as a Postgres (PostgresSQL) database. Users can also use an API to export data to a database, such as a Postgres database.                                                                                                                                                                                                                                                                                                                                             |
+| map (func)                           | It is an essential operation capable of expressing all transformations needed in data science. It passes each element of the source through a function func, thereby returning a newly formed distributed dataset.                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| Parquet                              | Columnar format that is supported by multiple data processing systems. Spark SQL allows reading and writing data from Parquet files, and Spark SQL preserves the data schema.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| Python                               | High-level, easy-to-comprehend, interpreted, and general-purpose dynamic programming language used in code readability. It offers a robust framework that helps build quick and scalable applications for z/OS, with an ecosystem of modules to develop new applications on any platform.                                                                                                                                                                                                                                                                                                                                                                          |
+| RDD actions                          | It is used to evaluate a transformation in Spark. It returns a value to the driver program after running a computation. An example is the reduce action that aggregates the elements of an RDD and returns the result to the driver program.                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| RDD transformations                  | It helps in creating a new RDD from an existing RDD. Transformations in Spark are deemed lazy as results are not computed immediately. The results are computed after evaluation by actions. For example, map transformation passes each element of a dataset through a function. This results in a new RDD.                                                                                                                                                                                                                                                                                                                                                      |
+| Read the data                        | When reading the data, users can load data directly into DataFrames or create a new Spark DataFrame from an existing DataFrame.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| Resilient Distributed Datasets (RDDs) | A fundamental abstraction in Apache Spark that represents distributed collections of data. RDDs
+
+# Welcome to Apache Spark Architecture
+
+After watching this video, you will be able to:
+
+- Describe the architecture of Apache Spark
+- Identify processes in a Spark Application
+- Explain how Spark Jobs and Tasks are related
+- Define Stages and describe when a Data Shuffle occurs
+- Describe the cluster deploy modes the driver program can be run in
+
+## Apache Spark Architecture
+
+![alt text](image-48.png)
+A Spark application has two main processes:
+
+1. **Driver Program**: Runs as one process per application. The driver process can be run on a cluster node or another machine as a client to the cluster. The driver runs the application’s user code, creates work, and sends it to the cluster.
+
+2. **Executor**: A process running multiple threads to perform work concurrently for the cluster. Executors work independently and there can be many throughout a cluster, with one or more per node depending on the configuration.
+
+## Spark Context
+
+![alt text](image-50.png)
+
+- The Spark Context starts when the application launches and must be created in the driver before DataFrames or RDDs.
+- Any DataFrames or RDDs created under the context are tied to it and the context must remain active for the life of them.
+
+## Jobs and Tasks
+
+![alt text](image-51.png)
+
+- The driver program creates work from the user code called “Jobs” (computations that can be performed in parallel).
+- The Spark Context in the driver divides the jobs into tasks to be executed on the cluster.
+- Tasks from a given job operate on different data subsets, called Partitions, allowing them to run in parallel in the Executors.
+
+## Spark Worker and Executor
+
+- A Spark Worker is a cluster node that performs work.
+- A Spark Executor utilizes a set portion of local resources as memory and compute cores, running one task per available core.
+- Each executor manages its data caching as dictated by the driver. Increasing executors and available cores increases the cluster’s parallelism.
+- Tasks run in separate threads until all cores are used. When a task finishes, the executor puts the results in a new RDD partition or transfers them back to the driver.
+
+## Stages and Data Shuffle
+
+![alt text](image-52.png)
+
+- A “stage” in a Spark job represents a set of tasks an executor can complete on the current data partition.
+- When a task requires other data partitions, Spark must perform a “shuffle,” marking the boundary between stages.
+- Shuffles are costly as they require data serialization, disk, and network I/O. They enable tasks to access other dataset partitions outside the current partition.
+
+## Example of a Shuffle
+
+![alt text](image-53.png)
+
+- In Stage 1, a transformation (e.g., map) is applied on dataset “a” which has 2 partitions (“1a” and “2b”), creating dataset “b”.
+- The next operation requires a shuffle (e.g., groupby). To group keys of equal value together, tasks must scan each partition to pick out the matching records.
+- Transformation results are placed in Stage 2. The results have the same number of partitions, but this depends on the operation.
+- Final results are sent to the driver program as an action, such as collect.
+
+> **NOTE**: It is not advised to perform a collection to the driver on a large data set as it could easily use up the driver process memory. If the data set is large, apply a reduction before collection.
+
+## Recap
+
+- Spark Architecture consists of the driver and the executor processes.
+- The cluster comprises the Cluster Manager and worker nodes.
+- The Spark Context schedules tasks to the cluster and the Cluster Manager manages the cluster’s resources.
+- The driver program can be run in either client or cluster mode:
+  - **Client Mode**: The application submitter (such as a user machine terminal) launches the driver outside the cluster.
+  - **Cluster Mode**: The driver program is sent to and run on an available Worker node inside the cluster.
+- The driver must be able to communicate with the cluster while it is running, whether it is in client or cluster mode.
+
+In this video, you learned that:
+
+- Spark Architecture has driver and executor processes, coordinated by the Spark Context in the driver.
+- The driver creates jobs and splits them into tasks which can be run in parallel in the executors.
+- Stages are a set of tasks that are separated by a data shuffle.
+- Shuffles are costly, as they require data serialization, disk, and network I/O.
+- The Driver can be run in either Client or Cluster mode. Client Mode connects the driver outside the cluster while Cluster Mode runs the driver in the cluster.
+![alt text](image-54.png)
+
+# Welcome to Overview of Apache Spark Cluster Modes
+
+After watching this video, you will be able to:
+
+- Identify the different modes of running Apache Spark on a cluster.
+- Describe the components and benefits of each cluster mode.
+- Describe how to run Spark to connect with each cluster mode.
+- Describe how and when to setup a local Spark instance.
+
+## Spark Cluster Manager
+
+The Spark Cluster Manager communicates with a cluster to acquire resources for an application to run. It runs as a service outside the application and abstracts the cluster type. While an application is running, the Spark Context creates tasks and communicates to the cluster manager what resources are needed. Then the cluster manager reserves executor cores and memory resources. Once the resources are reserved, tasks can be transferred to the executor processes to run.
+
+Spark has built-in support for several cluster managers:
+
+- **Standalone**: Included with the Spark installation, best for setting up a simple cluster.
+- **Apache Hadoop YARN**: A cluster manager from the Hadoop project.
+- **Apache Mesos**: A general-purpose cluster manager that Spark can run with additional benefits.
+- **Kubernetes**: An open-source system for running containerized applications.
+
+## Spark Standalone Cluster
+
+Spark Standalone comes packaged with the Spark installation, so there are no additional dependencies required to configure and deploy. Spark Standalone is specifically designed to run Spark and is often the fastest way to get a cluster up and running applications.
+
+A Spark Standalone cluster has two main components:
+
+- **Workers**: Run on cluster nodes and start an executor process with one or more reserved cores.
+- **Master**: There must be one master available, which can run on any cluster node. It connects workers to the cluster and keeps track of them with heartbeat polling.
+
+> **Note**: If the master is together with a worker, do not reserve all the node’s cores and memory for the worker.
+
+### Setting up a Spark Standalone Cluster
+
+1. **Start the Master**: The Master is assigned a URL with a hostname and port number.
+2. **Start Workers**: Use the Master URL to start workers on any node using bi-directional communication with the master.
+
+Once the master and the workers are running, you can launch a Spark application on the cluster by specifying the master URL as an argument to connect them.
+
+For additional configuration options, refer to the Apache Spark documentation on the [spark.apache.org](https://spark.apache.org) website.
+![alt text](image-55.png)
+![alt text](image-56.png)
+
+## Apache Hadoop YARN
+
+Apache Hadoop YARN is a general-purpose cluster manager. It’s popular in the big data ecosystem and supports many other frameworks besides Spark. YARN clusters have their own dependencies, set-up, and configuration requirements, so deploying them is more complex than Spark Standalone.
+
+To run Spark on an existing YARN cluster, use the `--master` option with the keyword YARN. Spark will look for the standard Hadoop configuration files to decide how to connect with the YARN cluster. No other configuration from Spark is needed.
+
+## Apache Mesos
+
+Apache Mesos is another general-purpose cluster manager supported by Spark. Using Mesos has some advantages, such as providing dynamic partitioning between Spark and other big data frameworks and scalable partitioning between multiple Spark instances. However, running Spark on Apache Mesos might require some additional setup depending on your configuration requirements. More details are provided on the [spark.apache.org](https://spark.apache.org) website.
+
+## Kubernetes
+
+![alt text](image-57.png)
+A Kubernetes cluster runs containerized applications. This makes Spark applications more portable and helps automate deployment, simplify dependency management, and scale the cluster as needed. Spark uses a built-in native Kubernetes scheduler. To run Spark on Kubernetes, use the example call shown.
+
+## Local Mode
+
+![alt text](image-58.png)
+Local mode runs a Spark application as a single process locally on the machine. Executors are run as separate threads in the main process that calls `spark-submit`. Local mode does not connect to any cluster or require configuration outside a basic Spark installation.
+
+Local mode can be run on a laptop. It is useful for testing or debugging a Spark application, such as testing a small data subset to verify correctness before running the application on a cluster. However, being constrained by a single process means local mode is not designed for optimal performance.
+
+To run in local mode, use the `--master` option with the keyword `local` followed by a number to indicate how many cores the Spark application can use for the executor. To use all available cores, replace the number with an asterisk wildcard. Keep in mind not all configuration for a cluster will be valid in local mode.
+
+## Summary
+
+In this video, you learned that:
+
+- Cluster managers acquire resources and run as an abstracted service outside the application.
+- Spark can run on Spark Standalone, Apache Hadoop YARN, Apache Mesos, or Kubernetes cluster managers, with specific setup requirements.
+- Choosing a cluster manager depends on your data ecosystem and factors such as ease of configuration, portability, deployment, or data partitioning needs.
+- Spark can run in local mode, useful for testing or debugging an application.
+
+# Welcome to “How to Run an Apache Spark Application”
+
+After watching this video, you will be able to:
+
+- Describe how to submit an Apache Spark application.
+- Explain the characteristics of Spark’s unified interface, ‘spark-submit.’
+- Describe and apply the options you can use to submit applications.
+- Describe ways of managing external application dependencies.
+- Describe the benefits of using Spark Shell to run applications.
+
+## Submitting an Apache Spark Application
+
+Spark comes with a unified interface for submitting applications – it is the ‘spark-submit’ script found in the ‘bin/’ directory. ‘spark-submit’ can be used for all supported cluster types and accepts many configuration options for the application or cluster. The “unified interface” means you can switch from running Spark in local mode to a cluster by changing a single argument. ‘spark-submit’ works the same way, no matter the application language. For example, a cluster can run Python and Java applications simultaneously by passing in the required files.
+
+### Using ‘spark-submit’
+
+1. The ‘spark-submit’ script first parses any command line arguments or options.
+2. It reads any additional configuration specified in the ‘spark-defaults’ folder.
+3. The ‘--master’ argument tells the application how to connect to the cluster or run locally.
+4. Specify any application files (including JARs or Python files) so they can start the driver program and distribute files to run in the cluster.
+![alt text](image-59.png)
+Some ‘spark-submit’ options are mandatory, such as specifying the master option to tell Spark which cluster manager to connect to. If the application is written in Java or Scala and packaged in a JAR, you must specify the full class name of the program entry point. Other options include:
+
+- Driver deploy mode (run as a client or in the cluster).
+- Executor resource settings (such as reserving memory or cores).
+
+Driver deploy mode defaults to client mode. Some options relate to specific cluster managers. Additional Spark configuration can be specified on the command line using the ‘--conf’ argument followed by key=value. For Java or Scala and Python, final arguments will be the path to the application JAR or Python script. Next are optional application-specific arguments. These will automatically be passed in. You can add Python files with ‘.py,’ ‘.egg’, or ‘.zip’ using the ‘--py-files’ argument. These files will be distributed to the cluster and available in the Python environment.
+
+### Examples of ‘spark-submit’
+
+1. **Launching SparkPi (Scala version) on YARN**:
+
+    ```sh
+    ./bin/spark-submit --class org.apache.spark.examples.SparkPi \
+      --master yarn \
+      examples/jars/spark-examples_2.11-2.4.5.jar 10
+    ```
+
+2. **Launching SparkPi (Python version) on a Standalone cluster**:
+
+    ```sh
+    ./bin/spark-submit \
+      --master spark://your_spark_master:7077 \
+      examples/src/main/python/pi.py 1000
+    ```
+
+## Managing Spark Dependencies
+
+For a Java or Scala-based application, it’s best to create an uber-JAR. This is a single JAR file with all dependencies (including transitive ones) so the application is portable throughout the cluster. For Python applications, ensure that:
+
+1. The cluster nodes access required dependencies with the same version.
+2. The same Python version is used.
+
+Solutions for Python dependencies may involve creating virtual environments so that applications can run in separate, isolated environments. Python dependencies can be included in the spark-submit script using the ‘--py-files’ argument: this will accept ‘.py’, ‘.zip’ or ‘.egg’ files.
+
+## Using Spark Shell
+
+![alt text](image-60.png)
+Spark Shell is available for Scala and Python, giving you access to Spark APIs for working with data as Spark jobs. Spark Shell can be used in local or cluster mode, with all options available. When Spark Shell starts, the environment automatically initializes the SparkContext and SparkSession variables. This means you can start working with data immediately.
+
+Expressions are entered in the shell and evaluated in the driver. Entering an action on a shell DataFrame generates Spark jobs that are sent to the cluster to be scheduled as tasks.
+
+### Example: Spark Scala Shell
+
+Starting up in local mode:
+
+```sh
+./bin/spark-shell --master local[2]
+```
+
+Output:
+
+- Spark’s load log in the log4j-defaults.properties file.
+- Spark’s Web UI address, displaying running jobs in the shell.
+- Variable names for the initialized SparkContext and SparkSession.
+- Version information for important libraries like JDK and Scala.
+
+Running code in the Scala shell:
+
+```scala
+val df = spark.range(0, 10)
+val df2 = df.withColumn("mod2", $"id" % 2)
+df2.show(4)
+```
+
+In this video, you learned that:
+
+- ‘spark-submit’ is a unified interface to submit the Spark Application, no matter the cluster manager or application language.
+- Mandatory options include telling Spark which cluster manager to connect to; other options set driver deploy mode or executor resourcing.
+- To manage dependencies, application projects or libraries must be accessible for driver and executor processes, for example by creating a Java or Scala uber-JAR.
+- Spark Shell simplifies working with data by automatically initializing the SparkContext and SparkSession variables and providing Spark API access.
+
+# Welcome to Setting Apache Spark Configuration
+
+After watching this video, you will be able to:
+
+- Describe the configuration types of an Apache Spark Application.
+- Explain the purpose and common options for each configuration type.
+- Describe when to use static or dynamic configuration.
+
+## Configuring a Spark Application
+
+You can configure a Spark Application using three different methods: properties, environment variables, or logging configuration.
+
+### Spark Properties
+
+You can set Spark properties to adjust and control most application behaviors, including setting properties with the driver and sharing them with the cluster. Spark properties can be configured in the following ways:
+
+- **Programmatically**: Set configuration in the driver program when creating the `SparkSession` or by using a separate `SparkConf` object passed into the session constructor.
+- **Configuration File**: Set properties in a configuration file found at `conf/spark-defaults.conf`.
+- **spark-submit**: Set properties when launching the application with `spark-submit`, either by using provided options such as `--master` or using the `--conf` option with a key-value pair.
+
+### Environment Variables
+
+Environment variables are loaded on each machine, allowing for adjustments on a per-machine basis if hardware or installed software differs between the cluster nodes. These are set in the `conf/spark-env.sh` file and can be used to configure specifics such as ensuring each machine uses the same Python executable by setting the `PYSPARK_PYTHON` environment variable.
+
+### Logging Configuration
+
+Spark logging is controlled by the log4j configuration file located at `conf/log4j.properties`. This file dictates what level of messages, such as info or errors, are logged to file or output to the driver during application execution. Log4j allows configuring where the logs are sent to and adjusting specific components of Spark or third-party libraries.
+
+## Configuration Files
+
+Spark configuration files are located under the `conf` directory in the installation. By default, there are no preexisting files after installation, but Spark provides templates for each configuration type with the filenames shown below. You can create the appropriate file by removing the ‘.template’ extension. Inside the template files, there are sample configurations for common settings which can be enabled by uncommenting.
+
+## Precedence Order of Configuration Settings
+
+Because Spark properties can be set in different ways, it’s important to understand how they are merged to build the final configuration for the application:
+
+1. **Programmatically**: Configuration set programmatically takes the highest precedence and will overwrite any previous settings.
+2. **spark-submit**: Configuration provided with the `spark-submit` script has the next highest precedence.
+3. **Configuration File**: Configuration set in the `spark-defaults.conf` file has the lowest precedence.
+
+## Static vs Dynamic Configuration
+
+### Static Configuration
+
+Static configuration refers to settings that are written programmatically into the application itself. These settings are not usually changed because modifying them requires changing the application. Use static configuration for settings unlikely to change between application runs, such as application name or properties related to the application only.
+
+Example:
+
+```scala
+val spark = SparkSession.builder()
+  .appName("ExampleApp")
+  .config("spark.driver.maxResultSize", "2g")
+  .getOrCreate()
+```
+
+### Dynamic Configuration
+
+Dynamic configuration is useful to avoid hardcoding specific values in the application itself. This is usually done for configurations such as the master location, allowing the application to be launched on different clusters by simply changing the master location. Examples include setting how many cores are used or how much memory is reserved by each executor to properly tune the application for the cluster it runs on.
+
+## Summary
+
+In this video, you learned that:
+
+- You can set Spark configuration using properties (to control application behavior), environment variables (to adjust settings on a per-machine basis), or logging properties (to control logging outputs).
+- Spark property configuration follows a precedence order, with the highest being configuration set programmatically, then `spark-submit` configuration, and lastly configuration set in the `spark-defaults.conf` file.
+- Static configuration should be used for values that don’t change from run to run or properties related to the application, such as application name.
+- Dynamic configuration should be used for values that change or need tuning when deployed, such as master location, executor memory, or core settings.
